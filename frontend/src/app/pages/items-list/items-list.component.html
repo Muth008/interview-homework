@@ -1,0 +1,6 @@
+<div class="items-list">
+    <app-list-item *ngFor="let item of items$ | async"
+                   [item]="item"
+                   (addToShipment)="addItemToShipment(item.id)">
+    </app-list-item>
+</div>
