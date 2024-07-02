@@ -5,6 +5,10 @@ import logger from 'morgan';
 import helmet from 'helmet';
 
 import indexRouter from './routes/index';
+import productRouter from './routes/product.route'
+import shipmentRouter from './routes/shipment.route'
+import statusRouter from './routes/status.route'
+import healthRouter from './routes/health.route'
 
 export const app = express();
 
@@ -22,5 +26,9 @@ app.use(helmet())
  * Routes
  */
 app.use('/api/', indexRouter);
+app.use('/api/product', productRouter)
+app.use('/api/shipment', shipmentRouter)
+app.use('/api/status', statusRouter)
+app.use('/api/health', healthRouter)
 
 export default app;
