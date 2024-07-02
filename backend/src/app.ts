@@ -3,6 +3,7 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import helmet from 'helmet';
+import swaggerDocs from './swagger';
 
 import indexRouter from './routes/index';
 import productRouter from './routes/product.route'
@@ -30,5 +31,7 @@ app.use('/api/product', productRouter)
 app.use('/api/shipment', shipmentRouter)
 app.use('/api/status', statusRouter)
 app.use('/api/health', healthRouter)
+
+swaggerDocs(app)
 
 export default app;
