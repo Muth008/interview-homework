@@ -46,3 +46,6 @@ Thumbs.db
 
 # Prisma
 /src/prisma/migrations
+
+# Uploading files
+/public/uploads
