@@ -1,0 +1,15 @@
+:host {
+  display: block;
+
+  footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  footer a {
+    display: flex;
+    align-items: center;
+  }
+}
