@@ -92,7 +92,7 @@ router.get("/", async (req, res) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Status'
+ *             $ref: '#/components/schemas/StatusCreate'
  *     responses:
  *       200:
  *         description: The created status.
@@ -126,7 +126,7 @@ router.post("/", async (req, res) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/PutStatusInput'
+ *             $ref: '#/components/schemas/StatusUpdate'
  *     responses:
  *       200:
  *         description: The updated status.
@@ -157,17 +157,13 @@ router.put("/", async (req, res) => {
  *     - Status
  *     summary: Delete a status
  *     description: Delete a status from the database.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *            type: object
- *            properties:
- *             id:
- *              type: number
- *           required:
- *            - id
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: number
+ *         description: The status's ID to delete.
  *     responses:
  *       200:
  *         description: The deleted status.
@@ -204,8 +200,17 @@ export default router;
  *         name:
  *           type: string
  *       required:
+ *        - id
  *        - name
- *     PutProductInput:
+ *     StatusCreate:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *       required:
+ *        - name
+ *       description: Parameter used to create product.
+ *     StatusUpdate:
  *       type: object
  *       properties:
  *         id:
@@ -215,5 +220,5 @@ export default router;
  *       required:
  *        - id
  *        - name
- *       description: Parameter of product used to update status.
+ *       description: Parameter used to update product.
  */

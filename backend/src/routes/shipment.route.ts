@@ -19,7 +19,7 @@ const router = express.Router();
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/CreateShipment'
+ *             $ref: '#/components/schemas/Shipment'
  *     responses:
  *       200:
  *         description: A list of shipments.
@@ -28,7 +28,7 @@ const router = express.Router();
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/ShipmentData'
+ *                 $ref: '#/components/schemas/Shipment'
  *       400:
  *         description: Bad Request
  *         content:
@@ -63,7 +63,7 @@ router.post("/list", async (req, res) => {
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ShipmentData'
+ *               $ref: '#/components/schemas/Shipment'
  *       400:
  *         description: Bad Request
  *         content:
@@ -92,14 +92,14 @@ router.get("/", async (req, res) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/CreateShipment'
+ *             $ref: '#/components/schemas/ShipmentCreate'
  *     responses:
  *       200:
  *         description: The created shipment.
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ShipmentData'
+ *               $ref: '#/components/schemas/Shipment'
  *       400:
  *         description: Bad Request
  *         content:
@@ -126,14 +126,14 @@ router.post("/", async (req, res) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/PutShipmentInput'
+ *             $ref: '#/components/schemas/ShipmentUpdate'
  *     responses:
  *       200:
  *         description: The updated shipment.
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ShipmentData'
+ *               $ref: '#/components/schemas/Shipment'
  *       400:
  *         description: Bad Request
  *         content:
@@ -157,17 +157,13 @@ router.put("/", async (req, res) => {
  *     - Shipment
  *     summary: Delete a shipment
  *     description: Delete a shipment from the database.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *            type: object
- *            properties:
- *             id:
- *              type: number
- *           required:
- *            - id
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: number
+ *         description: The shipment's ID to delete.
  *     responses:
  *       200:
  *         description: The deleted shipment.
@@ -196,7 +192,7 @@ export default router;
  * @openapi
  * components:
  *   schemas:
- *     CreateShipment:
+ *     ShipmentCreate:
  *       type: object
  *       properties:
  *         companyName:
@@ -220,7 +216,7 @@ export default router;
  *         - products
  *       additionalProperties: false
  *       description: Schema of shipment for create request.
- *     ShipmentData:
+ *     Shipment:
  *       type: object
  *       properties:
  *         id:
@@ -250,6 +246,7 @@ export default router;
  *             $ref: '#/components/schemas/ShipmentProduct'
  *           description: List of products included in the shipment.
  *       required:
+ *         - id
  *         - companyName
  *         - shipmentDate
  *         - statusId
@@ -270,7 +267,7 @@ export default router;
  *         - quantity
  *       additionalProperties: false
  *       description: Product details included in a shipment.
- *     PutShipmentInput:
+ *     ShipmentUpdate:
  *       type: object
  *       properties:
  *         id:

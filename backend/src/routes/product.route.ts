@@ -55,8 +55,8 @@ router.post('/list', async (req, res) => {
  *         name: id
  *         required: true
  *         schema:
- *           type: number
- *         description: The product's ID.
+ *           type: integer
+ *         description: The ID of the product to return.
  *     responses:
  *       200:
  *         description: A single product.
@@ -92,7 +92,7 @@ router.get('/', async (req, res) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Product'
+ *             $ref: '#/components/schemas/ProductCreate'
  *     responses:
  *       200:
  *         description: The created product.
@@ -126,7 +126,7 @@ router.post('/', async (req, res) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/PutProductInput'
+ *             $ref: '#/components/schemas/ProductUpdate'
  *     responses:
  *       200:
  *         description: The updated product.
@@ -155,19 +155,15 @@ router.put('/', async (req, res) => {
  *   delete:
  *     tags:
  *     - Product
- *     summary: Delete a product
- *     description: Delete a product from the database.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *            type: object
- *            properties:
- *             id:
- *              type: number
- *           required:
- *            - id
+ *     summary: Delete a product by ID
+ *     description: Delete a product from the database by ID.
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the product to delete.
  *     responses:
  *       200:
  *         description: The deleted product.
@@ -205,6 +201,26 @@ export default router;
  *           type: string
  *         description:
  *           type: string
+ *         imageUrl:
+ *           type: string
+ *         quantity:
+ *           type: number
+ *         price:
+ *           type: number
+ *       required:
+ *        - id
+ *        - name
+ *        - quantity
+ *        - price
+ *     ProductCreate:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *         description:
+ *           type: string
+ *         imageUrl:
+ *           type: string
  *         quantity:
  *           type: number
  *         price:
@@ -212,8 +228,9 @@ export default router;
  *       required:
  *        - name
  *        - quantity
- *        - price
- *     PutProductInput:
+ *        - price 
+ *       description: Parameter used to update product.
+ *     ProductUpdate:
  *       type: object
  *       properties:
  *         id:
@@ -221,6 +238,8 @@ export default router;
  *         name:
  *           type: string
  *         description:
+ *           type: string
+ *         imageUrl:
  *           type: string
  *         quantity:
  *           type: number
@@ -231,5 +250,5 @@ export default router;
  *        - name
  *        - quantity
  *        - price 
- *       description: Parameter of product used to update products.
+ *       description: Parameter used to update product.
  */
