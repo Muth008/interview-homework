@@ -4,8 +4,40 @@ import getProduct from '../services/product/get.service';
 import createProduct from '../services/product/create.service';
 import updateProduct from '../services/product/update.service';
 import deleteProduct from '../services/product/delete.service';
+import path from 'path';
 
 const router = express.Router();
+
+/**
+ * @openapi
+ * paths:
+ *   /api/product/uploads/{filename}:
+ *     get:
+ *       tags:
+ *       - Product
+ *       summary: View or download a product file
+ *       description: Provides access to product files stored in a public directory, allowing for viewing or downloading.
+ *       parameters:
+ *         - in: path
+ *           name: filename
+ *           required: true
+ *           schema:
+ *             type: string
+ *           description: The name of the file to view or download.
+ *       responses:
+ *         200:
+ *           description: The file is successfully retrieved.
+ *           content:
+ *             image/*:
+ *               schema:
+ *                 type: string
+ *                 format: binary
+ *         404:
+ *           description: The file was not found.
+ *         500:
+ *           description: Internal server error.
+ */
+router.use("/uploads", express.static(path.join(__dirname, "../../public/uploads/product")));
 
 /**
  * @openapi
@@ -90,7 +122,7 @@ router.get('/', async (req, res) => {
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             $ref: '#/components/schemas/ProductCreate'
  *     responses:
@@ -124,7 +156,7 @@ router.post('/', async (req, res) => {
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             $ref: '#/components/schemas/ProductUpdate'
  *     responses:
@@ -222,9 +254,12 @@ export default router;
  *         imageUrl:
  *           type: string
  *         quantity:
- *           type: number
+ *           type: string
  *         price:
- *           type: number
+ *           type: string
+ *         image:
+ *           type: string
+ *           format: binary
  *       required:
  *        - name
  *        - quantity
@@ -234,7 +269,7 @@ export default router;
  *       type: object
  *       properties:
  *         id:
- *           type: number
+ *           type: string
  *         name:
  *           type: string
  *         description:
@@ -242,9 +277,12 @@ export default router;
  *         imageUrl:
  *           type: string
  *         quantity:
- *           type: number
+ *           type: string
  *         price:
- *           type: number
+ *           type: string
+ *         image:
+ *           type: string
+ *           format: binary
  *       required:
  *        - id
  *        - name

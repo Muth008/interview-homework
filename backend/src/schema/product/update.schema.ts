@@ -1,11 +1,13 @@
 const updateProductSchema = {
     type: "object",
     properties: {
-        id: { type: "number" },
+        id: { type: "string" },
         name: { type: "string" },
         description: { type: "string" },
-        quantity: { type: "number" },
-        price: { type: "number" },
+        quantity: { type: "string" },
+        price: { type: "string" },
+        imageUrl: { type: "string" },
+        image: { type: "string", format: "binary" },
     },
     required: ["id"],
     additionalProperties: false,

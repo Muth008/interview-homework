@@ -3,8 +3,10 @@ const createProductSchema = {
     properties: {
         name: { type: "string" },
         description: { type: "string" },
-        quantity: { type: "number" },
-        price: { type: "number" },
+        quantity: { type: "string" },
+        price: { type: "string" },
+        imageUrl: { type: "string" },
+        image: { type: "string", format: "binary" },
     },
     required: ["name", "quantity", "price"],
     additionalProperties: false,
