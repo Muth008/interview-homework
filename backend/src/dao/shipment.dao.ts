@@ -91,6 +91,12 @@ class ShipmentDAO {
       where: { id },
     });
   }
+
+  async getShipmentProducts(shipmentId: number) {
+    return await this.prisma.product_shipment.findMany({
+      where: { shipmentId },
+    });
+  }
 }
 
 export default ShipmentDAO;

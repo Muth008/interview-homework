@@ -8,6 +8,7 @@ import {
     GENERATE_ID_MAX_ATTEMPTS, 
     PRISMA_UNIQUE_CONSTRAINT_ERROR_CODE 
 } from "../../constants/shipment.constants";
+import { handleProductsQuantities } from "../../utils/product.util";
 
 const prisma = new PrismaClient();
 const shipmentDAO = new ShipmentDAO(prisma);
@@ -19,6 +20,8 @@ async function createShipment(req: Request, res: Response) {
         // Validate request body
         const valid = ajv.validate(createShipmentSchema, body);
         if (!valid) handleValidationError(ajv);
+
+        handleProductsQuantities(body.id, body.products)
 
         const shipment = await createShipmentWithRetry(body);
         res.json(shipment);

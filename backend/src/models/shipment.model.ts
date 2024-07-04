@@ -6,10 +6,10 @@ export interface Shipment {
     statusId: number;
     createdAt?: string;
     updatedAt?: string;
-    products?: Shipmentroduct[];
+    products?: Shipmentproduct[];
 }
 
-interface Shipmentroduct {
+export interface Shipmentproduct {
     shipmentId?: number;
     productId: number;
     quantity: number;

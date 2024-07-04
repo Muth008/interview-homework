@@ -40,9 +40,23 @@ class ProductDAO {
     });
   }
 
-  async deleteProduct(id: Product['id']) {
+  async deleteProduct(id: number) {
     return await this.prisma.product.delete({
       where: { id },
+    });
+  }
+
+  async incrementProductQuantity(id: number, quantity: number) {
+    return await this.prisma.product.update({
+      where: { id },
+      data: { quantity: { increment: quantity } },
+    });
+  }
+
+  async decrementProductQuantity(id: number, quantity: number) {
+    return await this.prisma.product.update({
+      where: { id },
+      data: { quantity: { decrement: quantity } },
     });
   }
 }

@@ -4,6 +4,7 @@ import { ajv, handleValidationError } from "../../utils/ajv.util";
 import deleteShipmentSchema from "../../schema/shipment/delete.schema";
 import { Request, Response } from 'express';
 import { createError } from "../../utils/error.util";
+import { handleProductsQuantities } from "../../utils/product.util";
 
 const prisma = new PrismaClient();
 const shipmentDAO = new ShipmentDAO(prisma);
@@ -15,6 +16,8 @@ async function deleteShipment(req: Request, res: Response) {
         // Validate request body
         const valid = ajv.validate(deleteShipmentSchema, body);
         if (!valid) handleValidationError(ajv);
+
+        handleProductsQuantities(body.id, body.products)
 
         const shipment = await shipmentDAO.deleteShipment(Number(body.id));
         res.json(shipment);
