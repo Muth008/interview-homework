@@ -16,7 +16,6 @@ export class ProductsListService {
   ) { }
 
   getProducts(): Observable<Array<WarehouseProduct>> {
-    console.trace();
     const productsObservable = this.productService.apiProductListPost();
     productsObservable.subscribe(products => {
       this.productsUpdate.next(products);

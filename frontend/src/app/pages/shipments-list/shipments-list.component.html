@@ -1,6 +1,7 @@
 <div class="shipments-list">
     <app-list-shipment *ngFor="let shipment of shipments$ | async"
                    [shipment]="shipment"
+                   [statuses]="statuses"
                    (editShipment)="editShipment(shipment.id)">
     </app-list-shipment>
     <button class="shipments-list--button" (click)="addShipment()">Add Shipment</button>

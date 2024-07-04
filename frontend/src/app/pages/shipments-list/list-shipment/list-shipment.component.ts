@@ -1,6 +1,6 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { WarehouseShipment } from 'src/app/core/models/warehouseShipment';
+import { WarehouseShipment, WarehouseShipmentStatus } from 'src/app/core/models/warehouseShipment';
 
 @Component({
   selector: 'app-list-shipment',
@@ -14,7 +14,11 @@ import { WarehouseShipment } from 'src/app/core/models/warehouseShipment';
 })
 export class ListShipmentComponent {
   @Input() shipment: WarehouseShipment;
+  @Input() statuses: WarehouseShipmentStatus[]
   @Output() editShipment: EventEmitter<void> = new EventEmitter<void>()
 
-
+  getStatusNameById(statusId: number): string {
+    const status = this.statuses?.find(s => s.id === statusId);
+    return status ? status.name : 'Unknown';
+  }
 }

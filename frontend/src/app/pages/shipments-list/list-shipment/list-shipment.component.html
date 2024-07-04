@@ -1,13 +1,10 @@
-
-
   <div class="list-shipment">
     <div class="list-shipment--content">
         <span><b>{{shipment.companyName}}</b></span>
         <span>{{shipment.shipmentId}}</span>
     </div>
+    <span><b>{{getStatusNameById(shipment.statusId)}}</b></span>
     <span>Shipment: {{shipment.shipmentDate | date:'shortDate'}}</span>
-    <span>Created: {{shipment.createdAt | date:'shortDate'}}</span>
-    <span>Updated: {{shipment.updatedAt | date:'shortDate'}}</span>
     <span>Products: {{shipment.products.length}}</span>
     <button class="list-shipment--button" (click)="editShipment.emit()">Edit Shipment</button>
 </div>

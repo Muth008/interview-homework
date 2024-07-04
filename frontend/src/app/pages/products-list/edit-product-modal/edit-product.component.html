@@ -4,6 +4,8 @@
 </div>
 <div class="modal-body">
   <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+
+      <!-- Name -->
       <div class="mb-3">
           <label for="name" class="form-label">Name</label>
           <input type="text" class="form-control" id="name" formControlName="name" required>
@@ -11,10 +13,14 @@
             <div *ngIf="productForm.get('name')?.errors?.['required']">Name is required.</div>
           </div>
       </div>
+
+      <!-- Description -->
       <div class="mb-3">
           <label for="description" class="form-label">Description</label>
           <textarea class="form-control" id="description" formControlName="description"></textarea>
       </div>
+
+      <!-- Image -->
       <div class="mb-3">
         <label for="imageUrl" class="form-label">Image</label>
         <input type="file" class="form-control" id="imageFile" (change)="onFileSelected($event)" accept="image/*">
@@ -22,6 +28,8 @@
           <img [src]="imagePreview" class="img-thumbnail" style="max-width: 200px; cursor: pointer;" (click)="openFullSizeImage()" alt="Product image preview">
         </div>
       </div>
+
+      <!-- Quantity -->
       <div class="mb-3">
           <label for="quantity" class="form-label">Quantity</label>
           <input type="number" class="form-control" id="quantity" formControlName="quantity" required>
@@ -30,6 +38,8 @@
               <div *ngIf="productForm.get('quantity')?.errors?.['min']">Quantity must be at least 0.</div>
           </div>
       </div>
+
+      <!-- Price -->
       <div class="mb-3">
           <label for="price" class="form-label">Price</label>
           <input type="number" class="form-control" id="price" formControlName="price" required>
@@ -38,6 +48,7 @@
               <div *ngIf="productForm.get('price')?.errors?.['min']">Price must be at least 0.</div>
           </div>
       </div>
+      
   </form>
 </div>
 <div class="modal-footer">
