@@ -1,0 +1,78 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{ isEditMode ? 'Edit' : 'Create' }} Shipment</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss()"></button>
+</div>
+<div class="modal-body">
+    <form [formGroup]="shipmentForm" (ngSubmit)="onSubmit()">
+
+        <!-- Company Name -->
+        <div class="mb-3">
+            <label for="companyName" class="form-label">Company Name</label>
+            <input type="text" class="form-control" id="companyName" formControlName="companyName" required>
+            <div *ngIf="shipmentForm.get('companyName')?.touched && shipmentForm.get('companyName')?.invalid" class="text-danger">
+                <small *ngIf="shipmentForm.get('companyName')?.errors?.['required']">Company Name is required.</small>
+            </div>
+        </div>
+
+        <!-- Shipment ID -->
+        <div class="mb-3" *ngIf="shipmentForm.get('shipmentId')?.value">
+            <label for="shipmentId" class="form-label">Shipment ID</label>
+            <input type="text" class="form-control" id="shipmentId" formControlName="shipmentId" readonly>
+        </div>
+
+        <!-- Shipment Date -->
+        <div class="mb-3">
+            <label for="shipmentDate" class="form-label">Shipment Date</label>
+            <input type="date" class="form-control" id="shipmentDate" formControlName="shipmentDate" required>
+            <div *ngIf="shipmentForm.get('shipmentDate')?.touched && shipmentForm.get('shipmentDate')?.invalid" class="text-danger">
+                <small *ngIf="shipmentForm.get('shipmentDate')?.errors?.['required']">Shipment Date is required.</small>
+            </div>
+        </div>
+
+        <!-- Status -->
+        <div class="mb-3">
+            <label for="statusId" class="form-label">Status</label>
+            <select class="form-select" id="statusId" formControlName="statusId" required>
+                <option disabled>Select Status</option>
+                <option *ngFor="let status of allStatuses" [ngValue]="status.id">{{ status.name }}</option>
+            </select>
+            <div *ngIf="shipmentForm.get('statusId')?.touched && shipmentForm.get('statusId')?.invalid" class="text-danger">
+                <small *ngIf="shipmentForm.get('statusId')?.errors?.['required']">Status is required.</small>
+            </div>
+        </div>
+
+        <!-- Products -->
+        <div class="mb-3">
+            <label for="products" class="form-label">Products</label>
+            <div formArrayName="products">
+                <div *ngFor="let product of products.controls; let i = index" [formGroupName]="i">
+                    <div class="row">
+                        <div class="col">
+                            <select class="form-select" formControlName="productId" required>
+                                <option disabled>Select Product</option>
+                                <option *ngFor="let warehouseProduct of allProducts" [ngValue]="warehouseProduct.id">
+                                    {{ warehouseProduct.id }} - {{ warehouseProduct.name }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <input type="number" class="form-control" placeholder="Quantity" formControlName="quantity" [max]="getMaxQuantity(i)" required>
+                            <div *ngIf="product.get('quantity')?.touched && product.get('quantity')?.invalid" class="text-danger">
+                                <small>1 - {{getMaxQuantity(i)}}</small>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <button type="button" class="btn btn-danger" (click)="removeProduct(i)">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary mt-2" (click)="addProduct()">Add Product</button>
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeModal.close()">Close</button>
+    <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+</div>
