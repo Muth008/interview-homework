@@ -33,7 +33,7 @@ async function updateProduct(req: Request, res: Response) {
 
                     if (req.file) {
                         // Update the body with uploaded file path
-                        body.imageUrl = `/${fileFolder}/uploads/${req.file.originalname}`;
+                        body.imageUrl = `/api/${fileFolder}/uploads/${req.file.originalname}`;
                     }
 
                     const product = await productDAO.updateProduct(body);
@@ -45,9 +45,7 @@ async function updateProduct(req: Request, res: Response) {
             });
         });
     } catch (err: any) {
-        res
-        .status(err.status ?? 500)
-        .json(err.status ? { ...err } : { ...createError('Update', 'product') });
+        res.status(err.status ?? 500).json(err.status ? { ...err } : { ...createError('Update', 'product') });
     }
 }
 
