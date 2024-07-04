@@ -5,4 +5,5 @@ export interface WarehouseProduct {
     imageUrl?: string;
     quantity: number;
     price: number;
+    image?: Blob;
 }
