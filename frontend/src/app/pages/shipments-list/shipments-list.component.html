@@ -1,1 +1,7 @@
-<p>shipments-list works!</p>,
+<div class="shipments-list">
+    <app-list-shipment *ngFor="let shipment of shipments$ | async"
+                   [shipment]="shipment"
+                   (editShipment)="editShipment(shipment.id)">
+    </app-list-shipment>
+    <button class="shipments-list--button" (click)="addShipment()">Add Shipment</button>
+</div>
