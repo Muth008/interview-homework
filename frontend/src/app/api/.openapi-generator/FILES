@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.module.ts
 api/api.ts
@@ -13,8 +12,6 @@ git_push.sh
 index.ts
 model/models.ts
 model/product.ts
-model/productCreate.ts
-model/productUpdate.ts
 model/shipment.ts
 model/shipmentCreate.ts
 model/shipmentProduct.ts

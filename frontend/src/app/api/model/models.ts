@@ -1,6 +1,4 @@
 export * from './product';
-export * from './productCreate';
-export * from './productUpdate';
 export * from './shipment';
 export * from './shipmentCreate';
 export * from './shipmentProduct';

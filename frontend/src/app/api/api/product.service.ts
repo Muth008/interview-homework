@@ -21,10 +21,6 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { Product } from '../model/product';
 // @ts-ignore
-import { ProductCreate } from '../model/productCreate';
-// @ts-ignore
-import { ProductUpdate } from '../model/productUpdate';
-// @ts-ignore
 import { ValidationError } from '../model/validationError';
 
 // @ts-ignore
@@ -38,7 +34,7 @@ import { Configuration }                                     from '../configurat
 })
 export class ProductService {
 
-    protected basePath = 'http://localhost:3000';
+    protected basePath = '';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
     public encoder: HttpParameterCodec;
@@ -61,6 +57,19 @@ export class ProductService {
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
 
+    /**
+     * @param consumes string[] mime-types
+     * @return true: consumes contains 'multipart/form-data', false: otherwise
+     */
+    private canConsumeForm(consumes: string[]): boolean {
+        const form = 'multipart/form-data';
+        for (const consume of consumes) {
+            if (form === consume) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     // @ts-ignore
     private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
@@ -299,16 +308,27 @@ export class ProductService {
     /**
      * Create a product
      * Create a new product in the database.
-     * @param productCreate 
+     * @param name 
+     * @param quantity 
+     * @param price 
+     * @param description 
+     * @param imageUrl 
+     * @param image 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiProductPost(productCreate: ProductCreate, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Product>;
-    public apiProductPost(productCreate: ProductCreate, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Product>>;
-    public apiProductPost(productCreate: ProductCreate, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Product>>;
-    public apiProductPost(productCreate: ProductCreate, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (productCreate === null || productCreate === undefined) {
-            throw new Error('Required parameter productCreate was null or undefined when calling apiProductPost.');
+    public apiProductPost(name: string, quantity: string, price: string, description?: string, imageUrl?: string, image?: Blob, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Product>;
+    public apiProductPost(name: string, quantity: string, price: string, description?: string, imageUrl?: string, image?: Blob, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Product>>;
+    public apiProductPost(name: string, quantity: string, price: string, description?: string, imageUrl?: string, image?: Blob, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Product>>;
+    public apiProductPost(name: string, quantity: string, price: string, description?: string, imageUrl?: string, image?: Blob, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (name === null || name === undefined) {
+            throw new Error('Required parameter name was null or undefined when calling apiProductPost.');
+        }
+        if (quantity === null || quantity === undefined) {
+            throw new Error('Required parameter quantity was null or undefined when calling apiProductPost.');
+        }
+        if (price === null || price === undefined) {
+            throw new Error('Required parameter price was null or undefined when calling apiProductPost.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -330,14 +350,42 @@ export class ProductService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (name !== undefined) {
+            localVarFormParams = localVarFormParams.append('name', <any>name) as any || localVarFormParams;
+        }
+        if (description !== undefined) {
+            localVarFormParams = localVarFormParams.append('description', <any>description) as any || localVarFormParams;
+        }
+        if (imageUrl !== undefined) {
+            localVarFormParams = localVarFormParams.append('imageUrl', <any>imageUrl) as any || localVarFormParams;
+        }
+        if (quantity !== undefined) {
+            localVarFormParams = localVarFormParams.append('quantity', <any>quantity) as any || localVarFormParams;
+        }
+        if (price !== undefined) {
+            localVarFormParams = localVarFormParams.append('price', <any>price) as any || localVarFormParams;
+        }
+        if (image !== undefined) {
+            localVarFormParams = localVarFormParams.append('image', <any>image) as any || localVarFormParams;
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -355,7 +403,7 @@ export class ProductService {
         return this.httpClient.request<Product>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: productCreate,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -368,16 +416,31 @@ export class ProductService {
     /**
      * Update a product
      * Update an existing product in the database.
-     * @param productUpdate 
+     * @param id 
+     * @param name 
+     * @param quantity 
+     * @param price 
+     * @param description 
+     * @param imageUrl 
+     * @param image 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiProductPut(productUpdate: ProductUpdate, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Product>;
-    public apiProductPut(productUpdate: ProductUpdate, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Product>>;
-    public apiProductPut(productUpdate: ProductUpdate, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Product>>;
-    public apiProductPut(productUpdate: ProductUpdate, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (productUpdate === null || productUpdate === undefined) {
-            throw new Error('Required parameter productUpdate was null or undefined when calling apiProductPut.');
+    public apiProductPut(id: string, name: string, quantity: string, price: string, description?: string, imageUrl?: string, image?: Blob, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Product>;
+    public apiProductPut(id: string, name: string, quantity: string, price: string, description?: string, imageUrl?: string, image?: Blob, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Product>>;
+    public apiProductPut(id: string, name: string, quantity: string, price: string, description?: string, imageUrl?: string, image?: Blob, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Product>>;
+    public apiProductPut(id: string, name: string, quantity: string, price: string, description?: string, imageUrl?: string, image?: Blob, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling apiProductPut.');
+        }
+        if (name === null || name === undefined) {
+            throw new Error('Required parameter name was null or undefined when calling apiProductPut.');
+        }
+        if (quantity === null || quantity === undefined) {
+            throw new Error('Required parameter quantity was null or undefined when calling apiProductPut.');
+        }
+        if (price === null || price === undefined) {
+            throw new Error('Required parameter price was null or undefined when calling apiProductPut.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -399,14 +462,45 @@ export class ProductService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (id !== undefined) {
+            localVarFormParams = localVarFormParams.append('id', <any>id) as any || localVarFormParams;
+        }
+        if (name !== undefined) {
+            localVarFormParams = localVarFormParams.append('name', <any>name) as any || localVarFormParams;
+        }
+        if (description !== undefined) {
+            localVarFormParams = localVarFormParams.append('description', <any>description) as any || localVarFormParams;
+        }
+        if (imageUrl !== undefined) {
+            localVarFormParams = localVarFormParams.append('imageUrl', <any>imageUrl) as any || localVarFormParams;
+        }
+        if (quantity !== undefined) {
+            localVarFormParams = localVarFormParams.append('quantity', <any>quantity) as any || localVarFormParams;
+        }
+        if (price !== undefined) {
+            localVarFormParams = localVarFormParams.append('price', <any>price) as any || localVarFormParams;
+        }
+        if (image !== undefined) {
+            localVarFormParams = localVarFormParams.append('image', <any>image) as any || localVarFormParams;
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -424,8 +518,56 @@ export class ProductService {
         return this.httpClient.request<Product>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: productUpdate,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * View or download a product file
+     * Provides access to product files stored in a public directory, allowing for viewing or downloading.
+     * @param filename The name of the file to view or download.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiProductUploadsFilenameGet(filename: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'image/*', context?: HttpContext}): Observable<Blob>;
+    public apiProductUploadsFilenameGet(filename: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'image/*', context?: HttpContext}): Observable<HttpResponse<Blob>>;
+    public apiProductUploadsFilenameGet(filename: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'image/*', context?: HttpContext}): Observable<HttpEvent<Blob>>;
+    public apiProductUploadsFilenameGet(filename: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'image/*', context?: HttpContext}): Observable<any> {
+        if (filename === null || filename === undefined) {
+            throw new Error('Required parameter filename was null or undefined when calling apiProductUploadsFilenameGet.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'image/*'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let localVarPath = `/api/product/uploads/${this.configuration.encodeParam({name: "filename", value: filename, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        return this.httpClient.request('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: "blob",
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
                 observe: observe,
