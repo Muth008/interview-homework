@@ -36,6 +36,9 @@ async function createShipmentWithRetry(body: any) {
 
     while (attempt < GENERATE_ID_MAX_ATTEMPTS) {
         try {
+            body.shipmentId = generateShipmentId();
+            body.shipmentDate = new Date(body.shipmentDate);
+            
             shipment = await shipmentDAO.createShipment(body);
             break;
         } catch (err: any) {

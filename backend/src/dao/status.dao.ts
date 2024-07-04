@@ -31,9 +31,11 @@ class StatusDAO {
   }
 
   async updateStatus(statusData: Status) {
+    const { id, ...updateData } = statusData;
+
     return await this.prisma.status.update({
-      where: { id: statusData.id },
-      data: statusData,
+      where: { id },
+      data: updateData,
     });
   }
 

@@ -59,23 +59,24 @@ class ShipmentDAO {
 
   async updateShipment(shipmentData: Shipment) {
     const { products, ...shipmentDetails } = shipmentData;
+    const { id, ...updateShipmentData } = shipmentDetails;
 
-    if (products && shipmentData.id) {
+    if (products && id) {
       await this.prisma.product_shipment.deleteMany({
-        where: { shipmentId: shipmentData.id },
+        where: { shipmentId: id },
       });
 
       await this.prisma.product_shipment.createMany({
         data: products.map((productShipment) => ({
           ...productShipment,
-          shipmentId: shipmentData.id!,
+          shipmentId: id!,
         })),
       });
     }
 
     const shipment = await this.prisma.shipment.update({
-      where: { id: shipmentData.id },
-      data: shipmentDetails,
+      where: { id },
+      data: updateShipmentData,
     });
 
     return shipment

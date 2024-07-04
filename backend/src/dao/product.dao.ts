@@ -25,15 +25,18 @@ class ProductDAO {
   }
 
   async createProduct(productData: Product) {
+    const { image, ...createData } = productData;
+
     return await this.prisma.product.create({
-      data: productData,
+      data: createData,
     });
   }
 
   async updateProduct(productData: Product) {
+    const { id, image, ...updateData } = productData;
     return await this.prisma.product.update({
-      where: { id: productData.id },
-      data: productData,
+      where: { id },
+      data: updateData,
     });
   }
 

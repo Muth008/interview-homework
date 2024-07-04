@@ -5,4 +5,5 @@ export interface Product {
     imageUrl?: string;
     quantity: number;
     price: number;
+    image?: Blob;
 }
