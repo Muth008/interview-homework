@@ -1,0 +1,7 @@
+<div class="products-list">
+    <app-list-product *ngFor="let product of products$ | async"
+                   [product]="product"
+                   (editProduct)="editProduct(product.id)">
+    </app-list-product>
+    <button class="products-list--button" (click)="addProduct()">Add Product</button>
+</div>

@@ -1,0 +1,15 @@
+<div class="list-product">
+    <div class="list-product--image">
+        <img [src]="product.imageUrl" alt="warehouse-product-image" *ngIf="product.imageUrl; else defaultImage">
+        <ng-template #defaultImage>
+            <img src="assets/logo_black.svg" alt="default-product-image">
+        </ng-template>
+    </div>
+    <div class="list-product--content">
+        <span><b>{{product.name}}</b></span>
+        <span>{{product.description}}</span>
+    </div>
+    <span>{{product.quantity}}x</span>
+    <span>{{product.price | currency:'EUR'}}</span>
+    <button class="list-product--button" (click)="editProduct.emit()">Edit product</button>
+</div>
