@@ -9,6 +9,7 @@ import {
     PRISMA_UNIQUE_CONSTRAINT_ERROR_CODE 
 } from "../../constants/shipment.constants";
 import { handleProductsQuantities } from "../../utils/product.util";
+import { generateShipmentId } from "../../utils/common.util";
 
 const prisma = new PrismaClient();
 const shipmentDAO = new ShipmentDAO(prisma);
@@ -21,6 +22,7 @@ async function createShipment(req: Request, res: Response) {
         const valid = ajv.validate(createShipmentSchema, body);
         if (!valid) handleValidationError(ajv);
 
+        // Increase and decrease the quantity of products in the warehouse
         handleProductsQuantities(body.id, body.products)
 
         const shipment = await createShipmentWithRetry(body);
@@ -33,7 +35,7 @@ async function createShipment(req: Request, res: Response) {
 /**
  * Try to create a shipment with the generated shipmentId.
  */
-async function createShipmentWithRetry(body: any) {
+export async function createShipmentWithRetry(body: any) {
     let attempt = 0;
     let shipment;
 
@@ -58,10 +60,6 @@ async function createShipmentWithRetry(body: any) {
     if (!shipment) throw createError('Create', 'shipment');
 
     return shipment;
-}
-
-function generateShipmentId() {
-    return Math.random().toString(16).slice(2);
 }
 
 export default createShipment;

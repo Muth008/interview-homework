@@ -1,64 +1,92 @@
 import { PrismaClient } from '@prisma/client';
 import { Product } from '../models/product.model';
 
+/**
+ * Data Access Object for Product
+ * Contains methods used to interact with the product table in the database
+ */
 class ProductDAO {
-  private prisma: PrismaClient;
+    private prisma: PrismaClient;
 
-  constructor(prismaClient: PrismaClient) {
-    this.prisma = prismaClient;
-  }
+    constructor(prismaClient: PrismaClient) {
+        this.prisma = prismaClient;
+    }
 
-  async getAllProducts() {
-    return await this.prisma.product.findMany();
-  }
+    /**
+     * Get all products
+     */
+    async getAllProducts() {
+        return await this.prisma.product.findMany();
+    }
 
-  async listProducts(productData: Product) {
-    return await this.prisma.product.findMany({
-      where: productData,
-    });
-  }
+    /**
+     * List products based on input criteria
+     */
+    async listProducts(productData: Partial<Product>) {
+        return await this.prisma.product.findMany({
+            where: productData,
+        });
+    }
 
-  async getProductById(id: number) {
-    return await this.prisma.product.findUnique({
-      where: { id },
-    });
-  }
+    /**
+     * Get product by ID
+     */
+    async getProductById(id: number) {
+        return await this.prisma.product.findUnique({
+            where: { id },
+        });
+    }
 
-  async createProduct(productData: Product) {
-    const { image, ...createData } = productData;
+    /**
+     * Create a new product
+     */
+    async createProduct(productData: Product) {
+        const { image, ...createData } = productData;
 
-    return await this.prisma.product.create({
-      data: createData,
-    });
-  }
+        return await this.prisma.product.create({
+            data: createData,
+        });
+    }
 
-  async updateProduct(productData: Product) {
-    const { id, image, ...updateData } = productData;
-    return await this.prisma.product.update({
-      where: { id },
-      data: updateData,
-    });
-  }
+    /**
+     * Update an existing product
+     */
+    async updateProduct(productData: Product) {
+        const { id, image, ...updateData } = productData;
+        return await this.prisma.product.update({
+            where: { id },
+            data: updateData,
+        });
+    }
 
-  async deleteProduct(id: number) {
-    return await this.prisma.product.delete({
-      where: { id },
-    });
-  }
+    /**
+     * Delete a product by ID
+     */
+    async deleteProduct(id: number) {
+        return await this.prisma.product.delete({
+            where: { id },
+        });
+    }
 
-  async incrementProductQuantity(id: number, quantity: number) {
-    return await this.prisma.product.update({
-      where: { id },
-      data: { quantity: { increment: quantity } },
-    });
-  }
+    /**
+     * Increment product quantity by a specified amount
+     */
+    async incrementProductQuantity(id: number, quantity: number) {
+        return await this.prisma.product.update({
+            where: { id },
+            data: { quantity: { increment: quantity } },
+        });
+    }
 
-  async decrementProductQuantity(id: number, quantity: number) {
-    return await this.prisma.product.update({
-      where: { id },
-      data: { quantity: { decrement: quantity } },
-    });
-  }
+    /**
+     * Decrement product quantity by a specified amount
+     */
+    async decrementProductQuantity(id: number, quantity: number) {
+        return await this.prisma.product.update({
+            where: { id },
+            data: { quantity: { decrement: quantity } },
+        });
+    }
 }
 
 export default ProductDAO;

@@ -4,7 +4,7 @@ import { ajv, handleValidationError } from '../../utils/ajv.util';
 import updateProductSchema from '../../schema/product/update.schema';
 import { Request, Response } from 'express';
 import { createError } from '../../utils/error.util';
-import { convertStringsToNumbers } from '../../utils/request.util';
+import { convertStringsToNumbers } from '../../utils/common.util';
 import { uploadFileMiddleware } from '../../middleware/file/upload.middleware';
 
 const prisma = new PrismaClient();

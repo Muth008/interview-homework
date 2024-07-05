@@ -4,6 +4,9 @@ import addFormats from "ajv-formats";
 export const ajv = new Ajv();
 addFormats(ajv);
 
+/**
+ * Handle validation error by throwing an error with status 400.
+ */
 export function handleValidationError(ajv: Ajv) {
     throw {
         status: 400,
@@ -13,6 +16,10 @@ export function handleValidationError(ajv: Ajv) {
     };
 }
 
+/**
+ * Handle form number error by creating an ajv error
+ * object and throwing an error with status 400.
+*/
 export function handleFormNumberError(key: string) {
 
     const ajvError = {

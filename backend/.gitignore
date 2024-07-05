@@ -43,6 +43,7 @@ Thumbs.db
 
 # Environment variables
 .env
+.env.test
 
 # Prisma
 /src/prisma/migrations

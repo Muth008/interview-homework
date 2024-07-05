@@ -1,7 +1,7 @@
 const createStatusSchema = {
   type: 'object',
   properties: {
-    name: { type: 'number' },
+    name: { type: 'string' },
   },
   required: ['name'],
   additionalProperties: false,

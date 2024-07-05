@@ -9,18 +9,18 @@ const prisma = new PrismaClient();
 const statusDAO = new StatusDAO(prisma);
 
 async function createStatus(req: Request, res: Response) {
-  try {
-    const body = req.body;
+    try {
+        const body = req.body;
 
-    // Validate request body
-    const valid = ajv.validate(createStatusSchema, body);
-    if (!valid) handleValidationError(ajv);
+        // Validate request body
+        const valid = ajv.validate(createStatusSchema, body);
+        if (!valid) handleValidationError(ajv);
 
-    const status = await statusDAO.createStatus(body);
-    res.json(status);
-  } catch (err: any) {
-    res.status(err.status ?? 500).json(err.status ? { ...err } : { ...createError('Create', 'status') });
-  }
+        const status = await statusDAO.createStatus(body);
+        res.json(status);
+    } catch (err: any) {
+        res.status(err.status ?? 500).json(err.status ? { ...err } : { ...createError('Create', 'status') });
+    }
 }
 
 export default createStatus;

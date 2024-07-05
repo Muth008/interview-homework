@@ -4,26 +4,26 @@ import { Request, Response } from 'express';
 import { Express } from 'express';
 
 const options = {
-  definition: {
+definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Warehouse API',
-      description: "API endpoints for a warehouse services documented on swagger",
-      contact: {
-        name: "Jiri Sindelar",
-        email: "jorge.sindelar@gmail.com",
-        url: "https://github.com/Muth008/warehouse"
-      },
-      version: '1.0.0',
+        title: 'Warehouse API',
+        description: "API endpoints for a warehouse services documented on swagger",
+        contact: {
+            name: "Jiri Sindelar",
+            email: "jorge.sindelar@gmail.com",
+            url: "https://github.com/Muth008/warehouse"
+        },
+        version: '1.0.0',
     },
     servers: [
-      {
-        url: "http://localhost:3000",
-        description: "Local server"
-      }
+        {
+            url: "http://localhost:3000",
+            description: "Local server"
+        }
     ]
-  },
-  apis: [
+},
+apis: [
     `${__dirname}/routes/*.ts`,
     `${__dirname}/schema/**/*.ts`],
 }
@@ -31,14 +31,14 @@ const options = {
 const swaggerSpec = swaggerJsdoc(options)
 
 function swaggerDocs(app: Express) {
-  // Swagger Page
-  app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+    // Swagger Page
+    app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
-  // Documentation in JSON format
-  app.get('/api/docs.json', (req: Request, res: Response) => {
-    res.setHeader('Content-Type', 'application/json')
-    res.send(swaggerSpec)
-  })
+    // Documentation in JSON format
+    app.get('/api/docs.json', (req: Request, res: Response) => {
+        res.setHeader('Content-Type', 'application/json')
+        res.send(swaggerSpec)
+    })
 }
 
 export default swaggerDocs

@@ -16,8 +16,8 @@ async function listStatus(req: Request, res: Response) {
         const valid = ajv.validate(listStatusSchema, body);
         if (!valid) handleValidationError(ajv);
 
-        const statuss = await statusDAO.listStatuses(body);
-        res.json(statuss);
+        const status = await statusDAO.listStatuses(body);
+        res.json(status);
     } catch (err: any) {
         res.status(err.status ?? 500).json(err.status ? {...err} :{ ...createError('List', 'status') });
     }

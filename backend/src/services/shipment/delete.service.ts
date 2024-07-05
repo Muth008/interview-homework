@@ -5,21 +5,25 @@ import deleteShipmentSchema from "../../schema/shipment/delete.schema";
 import { Request, Response } from 'express';
 import { createError } from "../../utils/error.util";
 import { handleProductsQuantities } from "../../utils/product.util";
+import { convertStringsToNumbers } from "../../utils/common.util";
 
 const prisma = new PrismaClient();
 const shipmentDAO = new ShipmentDAO(prisma);
 
 async function deleteShipment(req: Request, res: Response) {
     try {
-        const body = req.body;
+        const query = req.query;
 
-        // Validate request body
-        const valid = ajv.validate(deleteShipmentSchema, body);
+        // Validate request query
+        const valid = ajv.validate(deleteShipmentSchema, query);
         if (!valid) handleValidationError(ajv);
 
-        handleProductsQuantities(body.id, body.products)
+        // Convert string number to actual number
+        convertStringsToNumbers(query, ['id'])
 
-        const shipment = await shipmentDAO.deleteShipment(Number(body.id));
+        handleProductsQuantities(Number(query.id))
+
+        const shipment = await shipmentDAO.deleteShipment(Number(query.id));
         res.json(shipment);
     } catch (err: any) {
         res.status(err.status ?? 500).json(err.status ? {...err} :{ ...createError('Delete', 'shipment')});

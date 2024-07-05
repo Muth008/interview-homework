@@ -1,49 +1,71 @@
 import { PrismaClient } from '@prisma/client';
 import { Status } from '../models/status.model';
 
+/**
+ * Data Access Object for Status
+ * Contains methods used to interact with the status table in the database
+ */
 class StatusDAO {
-  private prisma: PrismaClient;
+    private prisma: PrismaClient;
 
-  constructor(prismaClient: PrismaClient) {
-    this.prisma = prismaClient;
-  }
+    constructor(prismaClient: PrismaClient) {
+        this.prisma = prismaClient;
+    }
 
-  async getAllStatuses() {
-    return await this.prisma.status.findMany();
-  }
+    /**
+     * Get all statuses
+     */
+    async getAllStatuses() {
+        return await this.prisma.status.findMany();
+    }
 
-  async listStatuses(statusData: Status) {
-    return await this.prisma.status.findMany({
-      where: statusData,
-    });
-  }
+    /**
+     * List statuses based on input criteria
+     */
+    async listStatuses(statusData: Partial<Status>) {
+        return await this.prisma.status.findMany({
+            where: statusData,
+        });
+    }
 
-  async getStatusById(id: number) {
-    return await this.prisma.status.findUnique({
-      where: { id },
-    });
-  }
+    /**
+     * Get status by ID
+     */
+    async getStatusById(id: number) {
+        return await this.prisma.status.findUnique({
+            where: { id },
+        });
+    }
 
-  async createStatus(statusData: Status) {
-    return await this.prisma.status.create({
-      data: statusData,
-    });
-  }
+    /**
+     * Create a new status
+     */
+    async createStatus(statusData: Status) {
+        return await this.prisma.status.create({
+            data: statusData,
+        });
+    }
 
-  async updateStatus(statusData: Status) {
-    const { id, ...updateData } = statusData;
+    /**
+     * Update an existing status
+     */
+    async updateStatus(statusData: Status) {
+        const { id, ...updateData } = statusData;
 
-    return await this.prisma.status.update({
-      where: { id },
-      data: updateData,
-    });
-  }
+        return await this.prisma.status.update({
+            where: { id },
+            data: updateData,
+        });
+    }
 
-  async deleteStatus(id: number) {
-    return await this.prisma.status.delete({
-      where: { id },
-    });
-  }
+    /**
+     * Delete a status
+     */
+    async deleteStatus(id: number) {
+        return await this.prisma.status.delete({
+            where: { id },
+        });
+    }
 }
 
 export default StatusDAO;

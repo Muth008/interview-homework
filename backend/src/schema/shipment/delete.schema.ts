@@ -2,7 +2,7 @@ const deleteShipmentSchema = {
   type: 'object',
   properties: {
     id: {
-      oneOf: [{ type: 'string' }, { type: 'number' }],
+      type: 'string'
     },
   },
   required: ['id'],

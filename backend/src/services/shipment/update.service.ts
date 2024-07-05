@@ -17,13 +17,13 @@ async function updateShipment(req: Request, res: Response) {
         const valid = ajv.validate(updateShipmentSchema, body);
         if (!valid) handleValidationError(ajv);
 
+        // Increase and decrease the quantity of products in the warehouse
         handleProductsQuantities(body.id, body.products)
 
+        // Convert shipmentDate from string to Date object
         body.shipmentDate = new Date(body.shipmentDate);
 
-        // Update Shipment
         const shipment = await shipmentDAO.updateShipment(body);
-
         res.json(shipment);
     } catch (err: any) {
         res.status(err.status ?? 500).json(err.status ? {...err} :{ ...createError('Update', 'shipment')});

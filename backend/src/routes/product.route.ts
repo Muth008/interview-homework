@@ -264,7 +264,7 @@ export default router;
  *        - name
  *        - quantity
  *        - price 
- *       description: Parameter used to update product.
+ *       description: Parameter used to create product. If image is provided, it will be stored in the public directory and imageUrl will be updated with the file path.
  *     ProductUpdate:
  *       type: object
  *       properties:
@@ -288,5 +288,5 @@ export default router;
  *        - name
  *        - quantity
  *        - price 
- *       description: Parameter used to update product.
+ *       description: Parameter used to update product. If image is provided, it will be stored in the public directory and imageUrl will be updated with the file path.
  */
