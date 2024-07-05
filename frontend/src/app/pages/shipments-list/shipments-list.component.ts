@@ -82,7 +82,7 @@ export class ShipmentsListComponent {
             } else if (result) {
                 this.shipmentListService.addShipment(result);
             }
-        });
+        }, () => {});
     }
 
     ngOnDestroy(): void {

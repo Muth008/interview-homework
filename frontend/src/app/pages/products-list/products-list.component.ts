@@ -62,6 +62,6 @@ export class ProductsListComponent  {
             } else if (result) {
                 this.productListService.addProduct(result);
             }
-        });
+        }, () => {});
     }
 }
