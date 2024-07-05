@@ -1,57 +1,57 @@
 <div class="modal-header">
-  <h4 class="modal-title">{{ isEditMode ? 'Edit' : 'Create' }} Product</h4>
-  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss()"></button>
+    <h4 class="modal-title">{{ isEditMode ? 'Edit' : 'Create' }} Product</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss()"></button>
 </div>
 <div class="modal-body">
-  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
 
-      <!-- Name -->
-      <div class="mb-3">
-          <label for="name" class="form-label">Name</label>
-          <input type="text" class="form-control" id="name" formControlName="name" required>
-          <div *ngIf="productForm.get('name')?.touched && productForm.get('name')?.invalid" class="text-danger">
-            <div *ngIf="productForm.get('name')?.errors?.['required']">Name is required.</div>
-          </div>
-      </div>
-
-      <!-- Description -->
-      <div class="mb-3">
-          <label for="description" class="form-label">Description</label>
-          <textarea class="form-control" id="description" formControlName="description"></textarea>
-      </div>
-
-      <!-- Image -->
-      <div class="mb-3">
-        <label for="imageUrl" class="form-label">Image</label>
-        <input type="file" class="form-control" id="imageFile" (change)="onFileSelected($event)" accept="image/*">
-        <div *ngIf="imagePreview" class="mt-2">
-          <img [src]="imagePreview" class="img-thumbnail" style="max-width: 200px; cursor: pointer;" (click)="openFullSizeImage()" alt="Product image preview">
+        <!-- Name -->
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" formControlName="name" required>
+            <div *ngIf="productForm.get('name')?.touched && productForm.get('name')?.invalid" class="text-danger">
+                <div *ngIf="productForm.get('name')?.errors?.['required']">Name is required.</div>
+            </div>
         </div>
-      </div>
 
-      <!-- Quantity -->
-      <div class="mb-3">
-          <label for="quantity" class="form-label">Quantity</label>
-          <input type="number" class="form-control" id="quantity" formControlName="quantity" required>
-          <div *ngIf="productForm.get('quantity')?.touched && productForm.get('quantity')?.invalid" class="text-danger">
-              <div *ngIf="productForm.get('quantity')?.errors?.['required']">Quantity is required.</div>
-              <div *ngIf="productForm.get('quantity')?.errors?.['min']">Quantity must be at least 0.</div>
-          </div>
-      </div>
+        <!-- Description -->
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" formControlName="description"></textarea>
+        </div>
 
-      <!-- Price -->
-      <div class="mb-3">
-          <label for="price" class="form-label">Price</label>
-          <input type="number" class="form-control" id="price" formControlName="price" required>
-          <div *ngIf="productForm.get('price')?.touched && productForm.get('price')?.invalid" class="text-danger">
-              <div *ngIf="productForm.get('price')?.errors?.['required']">Price is required.</div>
-              <div *ngIf="productForm.get('price')?.errors?.['min']">Price must be at least 0.</div>
-          </div>
-      </div>
-      
-  </form>
+        <!-- Image -->
+        <div class="mb-3">
+            <label for="imageUrl" class="form-label">Image</label>
+            <input type="file" class="form-control" id="imageFile" (change)="onFileSelected($event)" accept="image/*">
+            <div *ngIf="imagePreview" class="mt-2">
+            <img [src]="imagePreview" class="img-thumbnail" style="max-width: 200px; cursor: pointer;" (click)="openFullSizeImage()" alt="Product image preview">
+            </div>
+        </div>
+
+        <!-- Quantity -->
+        <div class="mb-3">
+            <label for="quantity" class="form-label">Quantity</label>
+            <input type="number" class="form-control" id="quantity" formControlName="quantity" required>
+            <div *ngIf="productForm.get('quantity')?.touched && productForm.get('quantity')?.invalid" class="text-danger">
+                <div *ngIf="productForm.get('quantity')?.errors?.['required']">Quantity is required.</div>
+                <div *ngIf="productForm.get('quantity')?.errors?.['min']">Quantity must be at least 0.</div>
+            </div>
+        </div>
+
+        <!-- Price -->
+        <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input type="number" class="form-control" id="price" formControlName="price" required>
+            <div *ngIf="productForm.get('price')?.touched && productForm.get('price')?.invalid" class="text-danger">
+                <div *ngIf="productForm.get('price')?.errors?.['required']">Price is required.</div>
+                <div *ngIf="productForm.get('price')?.errors?.['min']">Price must be at least 0.</div>
+            </div>
+        </div>
+        
+    </form>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-secondary" (click)="activeModal.close()">Close</button>
-  <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+    <button type="button" class="btn btn-secondary" (click)="activeModal.close()">Close</button>
+    <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
 </div>

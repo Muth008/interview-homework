@@ -1,4 +1,4 @@
-<div class="list-product">
+<div class="list-product" *ngIf="product">
     <div class="list-product--image">
         <img [src]="product.imageUrl" alt="warehouse-product-image" *ngIf="product.imageUrl; else defaultImage">
         <ng-template #defaultImage>

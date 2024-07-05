@@ -1,29 +1,29 @@
 :host{
-  .list-product{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    margin: 10px 0px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    &--image img{
-      width: 50px;
-      height: 50px;
+    .list-product{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        margin: 10px 0px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        &--image img{
+            width: 50px;
+            height: 50px;
+        }
+        &--content{
+            display: flex;
+            flex: 0.9;
+            flex-direction: column;
+            justify-content: space-around;
+            padding: 0 10px;
+        }
+        &--button{
+            cursor: pointer;
+            border: 0;
+            border-radius: 7px;
+            padding: 10px;
+        }
     }
-    &--content{
-      display: flex;
-      flex: 0.9;
-      flex-direction: column;
-      justify-content: space-around;
-      padding: 0 10px;
-    }
-    &--button{
-      cursor: pointer;
-      border: 0;
-      border-radius: 7px;
-      padding: 10px;
-    }
-  }
 }

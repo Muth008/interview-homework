@@ -1,3 +1,17 @@
 :host {
-  display: block;
+    display: block;
+    
+    .display-1 {
+        font-size: 8rem;
+        font-weight: 700;
+        color: #007bff;
+    }
+
+    h2 {
+        font-size: 2.5rem;
+    }
+
+    .lead {
+        font-size: 1.25rem;
+    }
 }
