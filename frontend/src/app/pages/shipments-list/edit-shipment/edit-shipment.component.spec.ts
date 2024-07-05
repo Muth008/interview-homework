@@ -4,6 +4,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import { EditShipmentComponent } from './edit-shipment.component';
 import { ShipmentsListService } from '../shipments-list.service';
+import { WarehouseProduct } from 'src/app/core/models/warehouseProduct';
+import { WarehouseShipment } from 'src/app/core/models/warehouseShipment';
 
 describe('EditShipmentComponent', () => {
 let component: EditShipmentComponent;
@@ -96,4 +98,49 @@ let mockFormBuilder: FormBuilder;
             products: [{ productId: 1, quantity: 10 }]
         }));
     });
+
+    describe('getMaxQuantity', () => {
+        it('should return correct max quantity for new shipment', () => {
+          component.isEditMode = false;
+          component.allProducts = [
+            { id: 1, name: 'Product 1', quantity: 10 } as WarehouseProduct,
+            { id: 2, name: 'Product 2', quantity: 20 } as WarehouseProduct
+          ];
+    
+          component.addProduct({ productId: 1, quantity: 5 });
+          
+          expect(component.getMaxQuantity(0)).toBe(10);
+        });
+    
+        it('should return correct max quantity for existing shipment', () => {
+          component.isEditMode = true;
+          component.allProducts = [
+            { id: 1, name: 'Product 1', quantity: 10 } as WarehouseProduct,
+            { id: 2, name: 'Product 2', quantity: 20 } as WarehouseProduct
+          ];
+          component.shipment = {
+            id: 1,
+            companyName: 'Test Company',
+            shipmentId: 'SHIP123',
+            shipmentDate: new Date().toISOString(),
+            statusId: 1,
+            products: [{ productId: 1, quantity: 5 }]
+          } as WarehouseShipment;
+    
+          component.ngOnInit();
+    
+          expect(component.getMaxQuantity(0)).toBe(15);
+        });
+    
+        it('should return 0 for non-existent product', () => {
+          component.isEditMode = false;
+          component.allProducts = [
+            { id: 1, name: 'Product 1', quantity: 10 } as WarehouseProduct
+          ];
+    
+          component.addProduct({ productId: 2, quantity: 5 });
+          
+          expect(component.getMaxQuantity(0)).toBe(0);
+        });
+      });
 });

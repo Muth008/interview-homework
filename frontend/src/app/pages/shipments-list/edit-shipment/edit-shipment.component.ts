@@ -63,14 +63,30 @@ export class EditShipmentComponent {
     }
 
     /**
-     * Returns the maximum quantity of a product based on the selected product.
+     * Calculates the maximum quantity of a product that can be added to the shipment.
+     * This is determined by the sum of the product's available quantity in the warehouse
+     * and the quantity of the product already included in the shipment (if any).
      */
     getMaxQuantity(index: number): number {
-        const productId = this.products?.at(index).get('productId')?.value;
+        const productFormGroup = this.products.at(index);
+        const productId = productFormGroup.get('productId')?.value;
         const selectedProduct = this.allProducts?.find(product => product.id === productId);
-        return selectedProduct ? selectedProduct.quantity : 0;
+    
+        let warehouseQuantity = selectedProduct ? selectedProduct.quantity : 0;
+        let shipmentQuantity = 0;
+    
+        if (this.isEditMode && this.shipment?.products) {
+            const existingProductInShipment = this.shipment.products.find(product => product.productId === productId);
+            if (existingProductInShipment) {
+                shipmentQuantity = existingProductInShipment.quantity;
+            }
+        }
+    
+        // The total allowed quantity is the sum of what's in the warehouse plus what's already in the shipment.
+        let totalAllowedQuantity = warehouseQuantity + shipmentQuantity;
+    
+        return totalAllowedQuantity;
     }
-
     /**
      * Adds a product to the shipmentForm products array.
      */

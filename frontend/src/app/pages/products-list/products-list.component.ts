@@ -62,8 +62,6 @@ export class ProductsListComponent  {
             } else if (result) {
                 this.productListService.addProduct(result);
             }
-        }, () => {
-            console.log('Modal dismissed');
         });
     }
 }

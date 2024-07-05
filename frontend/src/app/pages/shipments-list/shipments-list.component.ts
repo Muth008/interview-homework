@@ -21,7 +21,7 @@ import { WarehouseProduct } from 'src/app/core/models/warehouseProduct';
 })
 export class ShipmentsListComponent {
     shipments$: Observable<WarehouseShipment[]> = this.shipmentListService.shipmentsUpdate?.asObservable();
-    products: WarehouseProduct[];
+    products$: Observable<WarehouseProduct[]> = this.productListService.productsUpdate?.asObservable();
     statuses: WarehouseShipmentStatus[];
     subscriptions = new Subscription();
 
@@ -32,13 +32,8 @@ export class ShipmentsListComponent {
     ) {
         this.shipmentListService.refreshShipments();
         this.subscriptions.add(
-            this.productListService.getProducts()?.subscribe(products => {
-            this.products = products;
-            })
-        );
-        this.subscriptions.add(
             this.shipmentListService.getStatuses()?.subscribe(statuses => {
-            this.statuses = statuses;
+                this.statuses = statuses;
             })
         );
     }
@@ -50,7 +45,7 @@ export class ShipmentsListComponent {
         this.shipments$.pipe(take(1)).subscribe(shipments => {
             const shipment = shipments.find(shipment => shipment.id === id);
             if (shipment) {
-            this.openShipmentModal(shipment);
+                this.openShipmentModal(shipment);
             }
         });
     }
@@ -74,7 +69,11 @@ export class ShipmentsListComponent {
         if (shipment) {
             modalRef.componentInstance.shipment = shipment;
         }
-        modalRef.componentInstance.allProducts = this.products;
+        
+        this.products$.pipe(take(1)).subscribe(products => {
+            modalRef.componentInstance.allProducts = products;
+        });
+
         modalRef.componentInstance.allStatuses = this.statuses;
 
         modalRef.result.then((result) => {
@@ -83,12 +82,10 @@ export class ShipmentsListComponent {
             } else if (result) {
                 this.shipmentListService.addShipment(result);
             }
-        }, () => {
-            console.log('Modal dismissed');
         });
     }
 
     ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
+        this.subscriptions.unsubscribe();
     }
 }

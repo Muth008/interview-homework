@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ShipmentService, StatusService } from 'src/app/api';
-import { WarehouseShipment, WarehouseShipmentProduct, WarehouseShipmentStatus } from 'src/app/core/models/warehouseShipment';
+import { WarehouseShipment, WarehouseShipmentStatus } from 'src/app/core/models/warehouseShipment';
+import { ProductsListService } from '../products-list/products-list.service';
 
 @Injectable({
     providedIn: 'root'
@@ -11,6 +12,7 @@ export class ShipmentsListService {
 
     constructor(
         private shipmentService: ShipmentService,
+        private productsListService: ProductsListService,
         private statusService: StatusService,
     ) { }
 
@@ -67,5 +69,6 @@ export class ShipmentsListService {
      */
     refreshShipments() {
         this.getShipments();
+        this.productsListService.refreshProducts();
     }
 }
