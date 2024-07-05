@@ -1,15 +1,24 @@
-<div class="list-product" *ngIf="product">
-    <div class="list-product--image">
-        <img [src]="product.imageUrl" alt="warehouse-product-image" *ngIf="product.imageUrl; else defaultImage">
-        <ng-template #defaultImage>
-            <img src="assets/logo_black.svg" alt="default-product-image">
-        </ng-template>
+<div class="list-product card mb-3" *ngIf="product">
+    <div class="card-body d-flex flex-wrap align-items-center">
+        <!-- Image -->
+        <div class="list-product--image me-3 mb-2 mb-md-0">
+            <img [src]="product.imageUrl" alt="warehouse-product-image" *ngIf="product.imageUrl; else defaultImage"
+                class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
+            <ng-template #defaultImage>
+            <img src="assets/logo_black.svg" alt="default-product-image"
+                class="img-thumbnail" style="width: 100px; height: 100px; object-fit: contain;">
+            </ng-template>
+        </div>
+        <!-- Content -->
+        <div class="list-product--content flex-grow-1 me-3 mb-2 mb-md-0">
+            <h5 class="card-title mb-1">{{product.name}}</h5>
+            <p class="card-text text-muted small mb-0">{{product.description}}</p>
+        </div>
+        <!-- Details and button -->
+        <div class="d-flex flex-wrap align-items-center">
+            <span class="badge bg-secondary me-2 mb-2 mb-md-0">{{product.quantity}}x</span>
+            <span class="me-3 mb-2 mb-md-0"><strong>{{product.price | currency:'EUR'}}</strong></span>
+            <button class="btn btn-outline-primary" (click)="editProduct.emit()">Edit product</button>
+        </div>
     </div>
-    <div class="list-product--content">
-        <span><b>{{product.name}}</b></span>
-        <span>{{product.description}}</span>
-    </div>
-    <span>{{product.quantity}}x</span>
-    <span>{{product.price | currency:'EUR'}}</span>
-    <button class="list-product--button" (click)="editProduct.emit()">Edit product</button>
 </div>

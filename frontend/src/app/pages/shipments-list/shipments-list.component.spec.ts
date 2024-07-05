@@ -78,7 +78,7 @@ describe('ShipmentsListComponent', () => {
 
     it('should call addShipment and open modal on button click', () => {
         spyOn(component, 'addShipment');
-        const button = fixture.debugElement.nativeElement.querySelector('.btn');
+        const button = fixture.debugElement.nativeElement.querySelector('.btn.btn-primary');
         button.click();
         expect(component.addShipment).toHaveBeenCalled();
     });

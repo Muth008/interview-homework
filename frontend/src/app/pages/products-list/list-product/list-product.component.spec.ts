@@ -33,22 +33,22 @@ describe('ListProductComponent', () => {
     });
 
     it('should display product information', () => {
-        const nameElement = fixture.debugElement.query(By.css('.list-product--content b')).nativeElement;
+        const nameElement = fixture.debugElement.query(By.css('.list-product--content h5.card-title')).nativeElement;
         expect(nameElement.textContent).toContain(mockProduct.name);
 
-        const spanElements = fixture.debugElement.queryAll(By.css('.list-product--content span'));
-        expect(spanElements[1].nativeElement.textContent).toContain(mockProduct.description);
+        const descriptionElement = fixture.debugElement.query(By.css('.list-product--content p.card-text')).nativeElement;
+        expect(descriptionElement.textContent).toContain(mockProduct.description);
 
-        const quantityElement = fixture.debugElement.query(By.css('.list-product span:nth-child(3)')).nativeElement;
+        const quantityElement = fixture.debugElement.query(By.css('.d-flex .badge')).nativeElement;
         expect(quantityElement.textContent).toContain(`${mockProduct.quantity}x`);
 
-        const priceElement = fixture.debugElement.query(By.css('.list-product span:nth-child(4)')).nativeElement;
+        const priceElement = fixture.debugElement.query(By.css('.d-flex .me-3 strong')).nativeElement;
         expect(priceElement.textContent).toContain(`€${mockProduct.price.toFixed(2)}`);
     });
 
     it('should emit editProduct event when edit button is clicked', () => {
         spyOn(component.editProduct, 'emit');
-        const button = fixture.debugElement.query(By.css('.list-product--button')).nativeElement;
+        const button = fixture.debugElement.query(By.css('.btn.btn-outline-primary')).nativeElement;
         button.click();
         expect(component.editProduct.emit).toHaveBeenCalled();
     });

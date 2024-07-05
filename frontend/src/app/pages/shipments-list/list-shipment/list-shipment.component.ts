@@ -21,4 +21,13 @@ export class ListShipmentComponent {
         const status = this.statuses?.find(s => s.id === statusId);
         return status ? status.name : 'Unknown';
     }
+
+    getStatusClass(statusId: number): string {
+        const statusClasses: { [key: number]: string } = {
+          1: 'bg-warning text-dark',
+          2: 'bg-info text-dark',
+          3: 'bg-success'
+        };
+        return statusClasses[statusId] || 'bg-secondary';
+    }
 }

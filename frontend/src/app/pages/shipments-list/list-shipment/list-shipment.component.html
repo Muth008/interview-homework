@@ -1,10 +1,16 @@
-<div class="list-shipment">
-    <div class="list-shipment--content">
-        <span><b>{{shipment.companyName}}</b></span>
-        <span>{{shipment.shipmentId}}</span>
+<div class="list-shipment card mb-3">
+    <div class="card-body d-flex flex-wrap align-items-center justify-content-between">
+        <div class="list-shipment--content mb-2 mb-md-0">
+            <h5 class="card-title mb-0">{{shipment.companyName}}</h5>
+            <small class="text-muted">{{shipment.shipmentId}}</small>
+        </div>
+        <div class="d-flex flex-wrap align-items-center">
+            <span class="badge me-2 mb-2 mb-md-0" [ngClass]="getStatusClass(shipment.statusId)">
+                {{getStatusNameById(shipment.statusId)}}
+            </span>
+            <span class="me-2 mb-2 mb-md-0">Shipment: {{shipment.shipmentDate | date:'shortDate'}}</span>
+            <span class="me-2 mb-2 mb-md-0">Products: {{shipment.products.length}}</span>
+            <button class="btn btn-outline-secondary" (click)="editShipment.emit()">Edit Shipment</button>
+        </div>
     </div>
-    <span><b>{{getStatusNameById(shipment.statusId)}}</b></span>
-    <span>Shipment: {{shipment.shipmentDate | date:'shortDate'}}</span>
-    <span>Products: {{shipment.products.length}}</span>
-    <button class="list-shipment--button" (click)="editShipment.emit()">Edit Shipment</button>
 </div>
