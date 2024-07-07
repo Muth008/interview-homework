@@ -87,6 +87,7 @@ export class EditShipmentComponent {
     
         return totalAllowedQuantity;
     }
+
     /**
      * Adds a product to the shipmentForm products array.
      */

@@ -1,34 +1,84 @@
-# Express API for Warehouse app
+# Warehouse Backend Application
 
-This folder serves as the scaffold of the application that is a part of the interview process for candidates attending on the position in CloudTalk.
+Welcome to the backend part of the Warehouse application. This document outlines the setup, architecture, and how to run the application locally.
 
-## Assignment
+## Overview
 
-1. Warehouse application, needs API for following features
-   1. Table of products that are available
-   2. Each item will have the following properties
-      1. Quantity
-      2. Unit price (euros)
-   3. Shipments
-      1. Possibility to create a new shipment
-         1. Company name
-         2. The generated ID of the shipment
-         3. Creation date (generated)
-         4. Scheduled shipment date
-         5. Items
-      2. Possibility to Edit the shipment
-      3. The shipments are listed to preview
-      4. Status
-         1. each shipment will have 3 statuses
-            1. Created
-            2. Prepared
-            3. Shipped
-2. Please at the development consider
-   1. Development best practises
-   2. Testing
-   3. Simulate a situation in which you work with the team (pay attention to how you work with Git)
-3. This is a bare minimum, there are no limits to creativity, just keep in mind what we wanted
+The Warehouse backend is a TypeScript-based Express application designed to manage warehouse operations, including products, shipments, and statuses. It provides a REST API for creating, reading, updating, and deleting (CRUD) these resources.
 
-We wish you good luck and a clear mind! We are looking forward to seeing you!
+## Getting Started
 
-PS: We should be able to run application locally, thus start the backend and be able to use endpoints through the curl/postman.
+### Prerequisites
+
+- Node.js (version 12 or higher)
+- npm (version 6 or higher)
+- MySQL database
+
+### Installation
+
+1. Clone the repository to your local machine.
+2. Navigate to the `backend/` directory.
+3. Copy the `.env.example` file to a new file named `.env` and update the environment variables to match your local setup, especially the `DATABASE_URL`.
+4. Run `npm install` to install the dependencies.
+
+### Development Server
+
+Run `npm run dev` for a dev server. Application will start at http://localhost:\<PORT> (replace \<PORT> with the port number specified in your .env file). The application will automatically reload if you change any of the source files.
+
+### Building the Application
+
+Since the application is written in TypeScript, it needs to be compiled to JavaScript before it can be run. To build the application, run:
+
+```sh
+npm run build
+```
+
+This command compiles the TypeScript files into JavaScript in the dist/ directory.
+
+### Database Setup
+Ensure your MySQL database is running and accessible via the DATABASE_URL specified in your .env file.
+
+#### Prisma Migrations and Seeding
+The database is managed with Prisma, so you'll need to run migrations and generate the Prisma client before starting the application:
+
+1. Run `npx prisma migrate` deploy to apply the database migrations.
+2. Generate the Prisma client by running `npx prisma generate`.
+
+Optionally, to seed the database with initial data, run:
+
+```sh
+npx prisma db seed
+```
+
+This will execute the seed script defined in application Prisma setup.
+
+### Running the Application
+To start the application, first ensure that you have built the application using the instructions above. Then, run the following command in the backend/ directory:
+
+```sh
+npm start
+```
+
+### API Documentation
+The REST API supports the following operations:
+
+- **Products**: List, create, update, and delete products.
+- **Shipments**: List, create, update, and delete shipments.
+- **Statuses**: List, create, update, and delete statuses.
+
+For detailed API endpoints and their specifications, please refer to the OpenAPI documentation available at http://localhost:\<PORT>/api-docs (replace \<PORT> with the port number specified in your .env file). Or you can download API specification at http://localhost:\<PORT>/docs.json.
+
+### Testing
+
+Before running the unit tests, it is necessary to create a .env.test file with the configuration of the testing database. This ensures that tests run against a separate database environment.
+
+To run the unit ans e2e tests, execute the following command:
+
+```sh
+npm test
+```
+
+This will run the tests defined in the jest.config.ts and jest.setup.ts files, and output the results.
+
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
