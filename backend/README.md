@@ -21,6 +21,25 @@ The Warehouse backend is a TypeScript-based Express application designed to mana
 3. Copy the `.env.example` file to a new file named `.env` and update the environment variables to match your local setup, especially the `DATABASE_URL`.
 4. Run `npm install` to install the dependencies.
 
+### Database Setup
+Ensure your MySQL database is running and accessible via the DATABASE_URL specified in your .env file.
+
+#### Prisma Migrations and Seeding
+The database is managed with Prisma, so you'll need to run migrations and generate the Prisma client before starting the application:
+
+1. Run `npm run prisma:migrate` deploy to apply the database migrations.
+2. Generate the Prisma client by running `npm run prisma:generate`.
+
+Optionally, to seed the database with initial data, run:
+
+```sh
+npx prisma db seed
+```
+
+This will execute the seed script defined in application Prisma setup.
+
+For more detailed information on Prisma ORM, see official documantation [Prisma](https://www.prisma.io/docs) 
+
 ### Development Server
 
 Run `npm run dev` for a dev server. Application will start at http://localhost: \<PORT> (replace \<PORT> with the port number specified in your .env file). The application will automatically reload if you change any of the source files.
@@ -34,23 +53,6 @@ npm run build
 ```
 
 This command compiles the TypeScript files into JavaScript in the dist/ directory.
-
-### Database Setup
-Ensure your MySQL database is running and accessible via the DATABASE_URL specified in your .env file.
-
-#### Prisma Migrations and Seeding
-The database is managed with Prisma, so you'll need to run migrations and generate the Prisma client before starting the application:
-
-1. Run `npx prisma migrate` deploy to apply the database migrations.
-2. Generate the Prisma client by running `npx prisma generate`.
-
-Optionally, to seed the database with initial data, run:
-
-```sh
-npx prisma db seed
-```
-
-This will execute the seed script defined in application Prisma setup.
 
 ### Running the Application
 To start the application, first ensure that you have built the application using the instructions above. Then, run the following command in the backend/ directory:
@@ -66,7 +68,7 @@ The REST API supports the following operations:
 - **Shipments**: List, create, update, and delete shipments.
 - **Statuses**: List, create, update, and delete statuses.
 
-For detailed API endpoints and their specifications, please refer to the OpenAPI documentation available at http://localhost: \<PORT>/api-docs (replace \<PORT> with the port number specified in your .env file). Or you can download API specification at http://localhost: \<PORT>/docs.json.
+For detailed API endpoints and their specifications, please refer to the OpenAPI documentation available at http://localhost: \<PORT>/api/docs/ (replace \<PORT> with the port number specified in your .env file). Or you can download API specification in json at http://localhost: \<PORT>/api/docs.json.
 
 ### Testing
 

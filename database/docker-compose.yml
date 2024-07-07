@@ -7,14 +7,15 @@ services:
     container_name: mysql_db
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_USER_PASS: ${MYSQL_USER_PASS}
+      MYSQL_USER_NAME: ${MYSQL_USER_NAME}
+      MYSQL_USER_PASSWORD: ${MYSQL_USER_PASSWORD}
     ports:
       - "3306:3306"
     volumes:
       - ./conf.d:/etc/mysql/conf.d
       - ./mysql-data:/var/lib/mysql
       - ./mysql-log:/var/log/mysql
-      - ./custom-init.sh:/docker-entrypoint-initdb.d/custom-init.sh
+      - ./initialization:/docker-entrypoint-initdb.d
     restart: unless-stopped
     networks:
       - net-public

@@ -6,8 +6,10 @@
     "dev": "nodemon src/server.ts",
     "start": "node dist/server.js",
     "build": "tsc",
-    "seed": "ts-node src/prisma/seed.ts",
-    "test": "NODE_ENV=test jest",
+    "prisma:migrate": "npx prisma migrate deploy --schema ./src/prisma/schema.prisma",
+    "prisma:generate": "npx prisma generate --schema ./src/prisma/schema.prisma",
+    "prisma:seed": "ts-node src/prisma/seed.ts",
+    "test": "cross-env NODE_ENV=test jest",
     "test:watch": "cross-env NODE_ENV=test jest --watch"
   },
   "dependencies": {

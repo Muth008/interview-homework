@@ -26,8 +26,10 @@ The Warehouse application is divided into three main parts:
 1. Navigate to the `backend/` directory.
 2. Copy the `.env.example` file to `.env` and update the environment variables, especially `DATABASE_URL`.
 3. Run `npm install` to install dependencies.
-4. Build the application with `npm run build`.
-5. Start the application with `npm start`.
+4. Run `npm run prisma:migrate` to create database schema. (If necessary, when DB is running)
+5. Run `npm run prisma:generate` to generate Prisma client.
+6. Build the application with `npm run build`.
+7. Start the application with `npm start`.
 
 For detailed instructions, refer to the backend README: [backend/README.md](backend/README.md).
 
@@ -43,8 +45,9 @@ For detailed instructions, refer to the frontend README: [frontend/README.md](fr
 
 1. Ensure MySQL is installed and running.
 2. Navigate to the `database/` directory.
-3. Run `docker-compose up` to start the database in a Docker container (optional).
-4. Apply migrations and seed the database as described in the backend setup.
+3. Copy the .env.example file to .env and update the environment variables.
+4. Run `docker-compose up -d` to start the database in a Docker container (optional).
+5. Apply migrations and seed the database as described in the backend setup.
 
 For detailed instructions, refer to the database README: [database/README.md](database/README.md).
 

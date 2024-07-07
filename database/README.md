@@ -15,9 +15,9 @@ This guide explains how to set up a MySQL database using Docker and initialize i
 
 ## Setup
 
-1. **Environment Variables**: Ensure your `.env` file contains the necessary environment variables (`MYSQL_ROOT_PASSWORD` and `MYSQL_USER_PASS`). These variables are used by the MySQL service and the custom initialization script.
+1. **Environment Variables**: Ensure your `.env` file contains the necessary environment variables (`MYSQL_ROOT_PASSWORD`, `MYSQL_USER_NAME` and `MYSQL_USER_PASSWORD`). These variables are used by the MySQL service and the custom initialization script.
 
-2. **Docker Compose File**: The `docker-compose.yml` file defines the MySQL database and phpMyAdmin services. It uses the environment variables for configuration and mounts the `custom-init.sh` script for database initialization. You can find the Docker Compose file in the [database directory](database/docker-compose.yml).
+2. **Docker Compose File**: The `docker-compose.yml` file defines the MySQL database and phpMyAdmin services. It uses the environment variables for configuration and mounts the `/initialization/custom-init.sh` script for database initialization. You can find the Docker Compose file in the [database directory](database/docker-compose.yml).
 
 3. **SQL Scripts**: Place your SQL initialization scripts in the `sql-scripts/` directory. The `custom-init.sh` script will execute these scripts and replace any password placeholders with the actual password set in the `.env` file.
 
@@ -35,8 +35,8 @@ This command will start the MySQL database and phpMyAdmin services in detached m
 
 - **URL**: http://localhost:8080/
 - **Server**: mysql_db
-- **Username**: root
-- **Password**: The value of `MYSQL_ROOT_PASSWORD` set in your `.env` file.
+- **Username**: The value of `MYSQL_USER_NAME` set in your `.env` file.
+- **Password**: The value of `MYSQL_USER_PASSWORD` set in your `.env` file.
 
 #### Stopping the Services
 

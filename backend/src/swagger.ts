@@ -12,7 +12,7 @@ definition: {
         contact: {
             name: "Jiri Sindelar",
             email: "jorge.sindelar@gmail.com",
-            url: "https://github.com/Muth008/warehouse"
+            url: "https://github.com/Muth008/interview-homework"
         },
         version: '1.0.0',
     },
@@ -24,8 +24,9 @@ definition: {
     ]
 },
 apis: [
-    `${__dirname}/routes/*.ts`,
-    `${__dirname}/schema/**/*.ts`],
+    `${__dirname}/routes/*.{ts,js}`,
+    `${__dirname}/schema/**/*.{ts,js}`
+    ],
 }
 
 const swaggerSpec = swaggerJsdoc(options)

@@ -1,1 +1,4 @@
 .env
+/conf.d
+/mysql-data
+/mysql-log
