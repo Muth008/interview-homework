@@ -23,7 +23,7 @@ The Warehouse backend is a TypeScript-based Express application designed to mana
 
 ### Development Server
 
-Run `npm run dev` for a dev server. Application will start at http://localhost:\<PORT\> (replace \<PORT\> with the port number specified in your .env file). The application will automatically reload if you change any of the source files.
+Run `npm run dev` for a dev server. Application will start at http://localhost: \<PORT> (replace \<PORT> with the port number specified in your .env file). The application will automatically reload if you change any of the source files.
 
 ### Building the Application
 
@@ -66,7 +66,7 @@ The REST API supports the following operations:
 - **Shipments**: List, create, update, and delete shipments.
 - **Statuses**: List, create, update, and delete statuses.
 
-For detailed API endpoints and their specifications, please refer to the OpenAPI documentation available at http://localhost:\<PORT\>/api-docs (replace \<PORT\> with the port number specified in your .env file). Or you can download API specification at http://localhost:\<PORT\>/docs.json.
+For detailed API endpoints and their specifications, please refer to the OpenAPI documentation available at http://localhost: \<PORT>/api-docs (replace \<PORT> with the port number specified in your .env file). Or you can download API specification at http://localhost: \<PORT>/docs.json.
 
 ### Testing
 
