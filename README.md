@@ -37,13 +37,13 @@ For detailed instructions, refer to the backend README: [backend/README.md](back
 
 1. Navigate to the `frontend/` directory.
 2. Run `npm install` to install dependencies.
-3. Start the application with `ng serve`.
+3. Start the application with `npm start`.
 
 For detailed instructions, refer to the frontend README: [frontend/README.md](frontend/README.md).
 
 #### Database
 
-1. Ensure MySQL is installed and running.
+1. Ensure Docker is installed and running.
 2. Navigate to the `database/` directory.
 3. Copy the .env.example file to .env and update the environment variables.
 4. Run `docker-compose up -d` to start the database in a Docker container (optional).

@@ -6,6 +6,7 @@
     "dev": "nodemon src/server.ts",
     "start": "node dist/server.js",
     "build": "tsc",
+    "prisma:migrate:dev": "npx prisma migrate dev --schema ./src/prisma/schema.prisma",
     "prisma:migrate": "npx prisma migrate deploy --schema ./src/prisma/schema.prisma",
     "prisma:generate": "npx prisma generate --schema ./src/prisma/schema.prisma",
     "prisma:seed": "ts-node src/prisma/seed.ts",
@@ -42,6 +43,7 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "ts-jest": "^29.1.5",
+    "ts-node": "^10.9.2",
     "typescript": "^5.5.3"
   }
 }

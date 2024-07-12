@@ -45,8 +45,5 @@ Thumbs.db
 .env
 .env.test
 
-# Prisma
-/src/prisma/migrations
-
 # Uploading files
 /public/uploads

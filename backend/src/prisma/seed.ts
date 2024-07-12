@@ -26,7 +26,7 @@ async function main() {
     // Create shipments
     await prisma.shipment.create({
         data: {
-        shipmentId: 'AASHIP123',
+        shipmentId: Math.random().toString(16).slice(2),
         companyName: 'Shipping Company First',
         shipmentDate: new Date(),
         statusId: shippedStatus.id,
@@ -41,7 +41,7 @@ async function main() {
 
     await prisma.shipment.create({
         data: {
-        shipmentId: 'AASHIP456',
+        shipmentId: Math.random().toString(16).slice(2),
         companyName: 'Shipping Company Second',
         shipmentDate: new Date(),
         statusId: createdStatus.id,

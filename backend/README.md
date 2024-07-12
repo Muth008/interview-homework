@@ -33,7 +33,7 @@ The database is managed with Prisma, so you'll need to run migrations and genera
 Optionally, to seed the database with initial data, run:
 
 ```sh
-npx prisma db seed
+npm run prisma:seed
 ```
 
 This will execute the seed script defined in application Prisma setup.
