@@ -9,26 +9,26 @@ export class ProductsMockService {
     #mockedProducts: WarehouseProduct[] = [
         {
         id: 1,
-        imageUrl: 'assets/logo_black.svg',
-        name: 'CloudTalk logo sticker',
+        imageUrl: 'assets/angular.svg',
+        name: 'Warehouse logo sticker',
         description:
-            'High-quality sticker of the best cloud calling solution provider in the world',
+            'High-quality sticker of the best warehouse provider in the world',
         quantity: 100,
         price: 10,
         }, {
         id: 2,
-        imageUrl: 'assets/logo_black.svg',
-        name: 'CloudTalk logo sticker 2',
+        imageUrl: 'assets/angular.svg',
+        name: 'Warehouse logo sticker 2',
         description:
-            'High-quality sticker v2 of the best cloud calling solution provider in the world',
+            'High-quality sticker v2 of the best warehouse provider in the world',
         quantity: 100,
         price: 20,
         }, {
         id: 3,
-        imageUrl: 'assets/logo_black.svg',
-        name: 'CloudTalk logo sticker 3',
+        imageUrl: 'assets/angular.svg',
+        name: 'Warehouse logo sticker 3',
         description:
-            'High-quality sticker v3 of the best cloud calling solution provider in the world',
+            'High-quality sticker v3 of the best warehouse provider in the world',
         quantity: 100,
         price: 30,
         }

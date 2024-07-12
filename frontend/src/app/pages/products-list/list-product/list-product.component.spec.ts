@@ -57,6 +57,6 @@ describe('ListProductComponent', () => {
         component.product = { ...mockProduct, imageUrl: undefined };
         fixture.detectChanges();
         const defaultImage = fixture.debugElement.query(By.css('.list-product--image img')).nativeElement;
-        expect(defaultImage.src).toContain('assets/logo_black.svg');
+        expect(defaultImage.src).toContain('assets/angular.svg');
     });
 });
