@@ -19,7 +19,7 @@ async function createShipment(req: Request, res: Response) {
         if (!valid) handleValidationError(ajv);
 
         // Increase and decrease the quantity of products in the warehouse
-        handleProductsQuantities(body.id, body.products)
+        handleProductsQuantities(undefined, body.products)
 
         const shipment = await createShipmentWithRetry(body);
         res.json(shipment);

@@ -10,11 +10,14 @@ const shipmentDAO = new ShipmentDAO(prisma);
 /**
  * Increase and decrease the quantity of products in the warehouse
  */
-export async function handleProductsQuantities(shipmentId: number, products?: Shipmentproduct[]) {
-    const shipmentProducts = await shipmentDAO.getShipmentProducts(shipmentId);
+export async function handleProductsQuantities(shipmentId?: number, products?: Shipmentproduct[]) {
 
-    if (shipmentProducts) {
-        await incrementProductsQuantity(shipmentProducts);
+    if (shipmentId) {
+        const shipmentProducts = await shipmentDAO.getShipmentProducts(shipmentId);
+
+        if (shipmentProducts) {
+            await incrementProductsQuantity(shipmentProducts);
+        }
     }
 
     if (products) {
