@@ -1,10 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ProductsListService } from './products-list.service';
 import { ProductService } from 'src/app/api';
 import { CommonUtilsService } from 'src/app/common/utils/common-utils.service';
 import { BehaviorSubject, of } from 'rxjs';
 import { WarehouseProduct } from 'src/app/core/models/warehouseProduct';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ProductsListService', () => {
     let service: ProductsListService;
@@ -24,13 +25,15 @@ describe('ProductsListService', () => {
         };
 
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
-            providers: [
-                ProductsListService,
-                { provide: ProductService, useValue: productServiceMock },
-                { provide: CommonUtilsService, useValue: commonUtilsServiceMock }
-            ]
-        });
+    imports: [],
+    providers: [
+        ProductsListService,
+        { provide: ProductService, useValue: productServiceMock },
+        { provide: CommonUtilsService, useValue: commonUtilsServiceMock },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+});
 
         service = TestBed.inject(ProductsListService);
     });

@@ -1,9 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ShipmentsListService } from './shipments-list.service';
 import { ShipmentService } from 'src/app/api';
 import { BehaviorSubject, of } from 'rxjs';
 import { WarehouseShipment } from 'src/app/core/models/warehouseShipment';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ShipmentsListService', () => {
     let service: ShipmentsListService;
@@ -25,12 +26,14 @@ describe('ShipmentsListService', () => {
         };
 
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
-            providers: [
-                ShipmentsListService,
-                { provide: ShipmentService, useValue: mockShipmentService },
-            ]
-        });
+    imports: [],
+    providers: [
+        ShipmentsListService,
+        { provide: ShipmentService, useValue: mockShipmentService },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+});
 
         service = TestBed.inject(ShipmentsListService);
     });

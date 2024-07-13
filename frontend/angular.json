@@ -72,10 +72,10 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "warehouse:build:production"
+              "buildTarget": "warehouse:build:production"
             },
             "development": {
-              "browserTarget": "warehouse:build:development"
+              "buildTarget": "warehouse:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -83,7 +83,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "warehouse:build"
+            "buildTarget": "warehouse:build"
           }
         },
         "test": {
