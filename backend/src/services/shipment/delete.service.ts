@@ -1,14 +1,10 @@
-import ShipmentDAO from "../../dao/shipment.dao";
-import { PrismaClient } from "@prisma/client";
 import { ajv, handleValidationError } from "../../utils/ajv.util";
 import deleteShipmentSchema from "../../schema/shipment/delete.schema";
 import { Request, Response } from 'express';
 import { createError } from "../../utils/error.util";
 import { handleProductsQuantities } from "../../utils/product.util";
 import { convertStringsToNumbers } from "../../utils/common.util";
-
-const prisma = new PrismaClient();
-const shipmentDAO = new ShipmentDAO(prisma);
+import { shipmentDAO } from "../../dao/daoInit";
 
 async function deleteShipment(req: Request, res: Response) {
     try {

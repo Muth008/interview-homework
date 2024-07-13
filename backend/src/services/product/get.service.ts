@@ -1,12 +1,8 @@
-import ProductDAO from "../../dao/product.dao";
-import { PrismaClient } from "@prisma/client";
 import { ajv, handleValidationError } from "../../utils/ajv.util";
 import getProductSchema from "../../schema/product/get.schema";
 import { createError, handleNotFound } from "../../utils/error.util";
 import { Request, Response } from 'express';
-
-const prisma = new PrismaClient();
-const productDAO = new ProductDAO(prisma);
+import { productDAO } from "../../dao/daoInit";
 
 async function getProduct(req: Request, res: Response) {
     try {

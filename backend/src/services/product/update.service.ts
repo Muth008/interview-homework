@@ -1,14 +1,10 @@
-import ProductDAO from '../../dao/product.dao';
-import { PrismaClient } from '@prisma/client';
 import { ajv, handleValidationError } from '../../utils/ajv.util';
 import updateProductSchema from '../../schema/product/update.schema';
 import { Request, Response } from 'express';
 import { createError } from '../../utils/error.util';
 import { convertStringsToNumbers } from '../../utils/common.util';
 import { uploadFileMiddleware } from '../../middleware/file/upload.middleware';
-
-const prisma = new PrismaClient();
-const productDAO = new ProductDAO(prisma);
+import { productDAO } from '../../dao/daoInit';
 
 const fileFolder = 'product';
 const uploadFile = uploadFileMiddleware(fileFolder);
@@ -25,7 +21,7 @@ async function updateProduct(req: Request, res: Response) {
 
                     // Validate request body
                     const valid = ajv.validate(updateProductSchema, body);
-                    if (!valid) handleValidationError(ajv);
+                    if (!valid) return reject(handleValidationError(ajv));
 
                     // Convert string numbers from form data to actual numbers
                     const keys = ['id', 'quantity', 'price'];

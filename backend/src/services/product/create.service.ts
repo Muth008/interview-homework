@@ -1,14 +1,10 @@
-import ProductDAO from '../../dao/product.dao';
-import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import { ajv, handleValidationError } from '../../utils/ajv.util';
 import { createError, handleUploadError } from '../../utils/error.util';
 import createProductSchema from '../../schema/product/create.schema';
 import { uploadFileMiddleware } from '../../middleware/file/upload.middleware';
 import { convertStringsToNumbers } from '../../utils/common.util';
-
-const prisma = new PrismaClient();
-const productDAO = new ProductDAO(prisma);
+import { productDAO } from '../../dao/daoInit';
 
 const fileFolder = 'product';
 const uploadFile = uploadFileMiddleware(fileFolder);

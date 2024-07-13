@@ -1,12 +1,8 @@
-import StatusDAO from "../../dao/status.dao";
-import { PrismaClient } from "@prisma/client";
 import { ajv, handleValidationError } from "../../utils/ajv.util";
 import getStatusSchema from "../../schema/status/get.schema";
 import { createError, handleNotFound } from "../../utils/error.util";
 import { Request, Response } from 'express';
-
-const prisma = new PrismaClient();
-const statusDAO = new StatusDAO(prisma);
+import { statusDAO } from "../../dao/daoInit";
 
 async function getStatus(req: Request, res: Response) {
     try {

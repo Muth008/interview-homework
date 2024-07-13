@@ -1,13 +1,9 @@
-import StatusDAO from "../../dao/status.dao";
-import { PrismaClient } from "@prisma/client";
 import { ajv, handleValidationError } from "../../utils/ajv.util";
 import deleteStatusSchema from "../../schema/status/delete.schema";
 import { Request, Response } from 'express';
 import { createError } from "../../utils/error.util";
 import { convertStringsToNumbers } from "../../utils/common.util";
-
-const prisma = new PrismaClient();
-const statusDAO = new StatusDAO(prisma);
+import { statusDAO } from "../../dao/daoInit";
 
 async function deleteStatus(req: Request, res: Response) {
     try {

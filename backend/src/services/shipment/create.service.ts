@@ -1,5 +1,3 @@
-import ShipmentDAO from "../../dao/shipment.dao";
-import { PrismaClient } from "@prisma/client";
 import { ajv, handleValidationError } from "../../utils/ajv.util";
 import { createError } from "../../utils/error.util";
 import createShipmentSchema from "../../schema/shipment/create.schema";
@@ -10,9 +8,7 @@ import {
 } from "../../constants/shipment.constants";
 import { handleProductsQuantities } from "../../utils/product.util";
 import { generateShipmentId } from "../../utils/common.util";
-
-const prisma = new PrismaClient();
-const shipmentDAO = new ShipmentDAO(prisma);
+import { shipmentDAO } from "../../dao/daoInit";
 
 async function createShipment(req: Request, res: Response) {
     try {
@@ -34,6 +30,7 @@ async function createShipment(req: Request, res: Response) {
 
 /**
  * Try to create a shipment with the generated shipmentId.
+ * If the shipmentId already exists, try to generate a new one.
  */
 export async function createShipmentWithRetry(body: any) {
     let attempt = 0;

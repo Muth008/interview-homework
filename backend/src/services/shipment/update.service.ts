@@ -1,13 +1,9 @@
-import ShipmentDAO from "../../dao/shipment.dao";
-import { PrismaClient } from "@prisma/client";
 import { ajv, handleValidationError } from "../../utils/ajv.util";
 import updateShipmentSchema from "../../schema/shipment/update.schema";
 import { Request, Response } from 'express';
 import { createError } from "../../utils/error.util";
 import { handleProductsQuantities } from "../../utils/product.util";
-
-const prisma = new PrismaClient();
-const shipmentDAO = new ShipmentDAO(prisma);
+import { shipmentDAO } from "../../dao/daoInit";
 
 async function updateShipment(req: Request, res: Response) {
     try {
