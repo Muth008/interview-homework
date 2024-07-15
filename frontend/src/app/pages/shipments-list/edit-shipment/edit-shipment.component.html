@@ -50,7 +50,7 @@
                         <div class="col">
                             <select class="form-select" formControlName="productId" required>
                                 <option disabled>Select Product</option>
-                                <option *ngFor="let warehouseProduct of allProducts" [ngValue]="warehouseProduct.id">
+                                <option *ngFor="let warehouseProduct of productsListService.products()" [ngValue]="warehouseProduct.id">
                                     {{ warehouseProduct.id }} - {{ warehouseProduct.name }}
                                 </option>
                             </select>

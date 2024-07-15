@@ -7,6 +7,7 @@ import { EditShipmentComponent } from "./edit-shipment/edit-shipment.component";
 import { WarehouseShipment, WarehouseShipmentStatus } from "src/app/core/models/warehouseShipment";
 import { BehaviorSubject, of } from "rxjs";
 import { WarehouseProduct } from "src/app/core/models/warehouseProduct";
+import { signal } from "@angular/core";
 
 describe('ShipmentsListComponent', () => {
     let component: ShipmentsListComponent;
@@ -33,18 +34,18 @@ describe('ShipmentsListComponent', () => {
     beforeEach(async () => {
         mockShipmentsListService = {
             refreshShipments: jasmine.createSpy('refreshShipments'),
-            shipmentsUpdate: new BehaviorSubject<WarehouseShipment[]>(mockShipments),
+            shipments: signal<WarehouseShipment[]>(mockShipments),
             updateShipment: jasmine.createSpy('updateShipment').and.callThrough(),
             addShipment: jasmine.createSpy('addShipment').and.callThrough(),
-            getStatuses: jasmine.createSpy('getStatuses').and.returnValue(of(moskStatuses))
+            fetchStatuses: jasmine.createSpy('fetchStatuses').and.returnValue(of(moskStatuses))
           };
 
         mockProductListService = {
             refreshProducts: jasmine.createSpy('refreshProducts'),
-            productsUpdate: new BehaviorSubject<WarehouseProduct[]>(mockProducts),
+            products: signal<WarehouseProduct[]>(mockProducts),
             updateProduct: jasmine.createSpy('updateProduct').and.callThrough(),
             addProduct: jasmine.createSpy('addProduct').and.callThrough(),
-            getProducts: jasmine.createSpy('getProducts').and.returnValue(of(mockProducts))
+            fetchProducts: jasmine.createSpy('fetchProducts').and.returnValue(of(mockProducts))
         };
 
         mockModalRef = {

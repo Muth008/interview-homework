@@ -6,12 +6,20 @@ import { EditShipmentComponent } from './edit-shipment.component';
 import { ShipmentsListService } from '../shipments-list.service';
 import { WarehouseProduct } from 'src/app/core/models/warehouseProduct';
 import { WarehouseShipment } from 'src/app/core/models/warehouseShipment';
+import { signal } from '@angular/core';
+import { ProductsListService } from '../../products-list/products-list.service';
 
 describe('EditShipmentComponent', () => {
 let component: EditShipmentComponent;
 let fixture: ComponentFixture<EditShipmentComponent>;
 let mockActiveModal: Partial<NgbActiveModal>;
 let mockFormBuilder: FormBuilder;
+let mockProductListService: Partial<ProductsListService>;
+const mockProducts: WarehouseProduct[] = [
+    { id: 1, name: 'Product 1', quantity: 10 } as WarehouseProduct,
+    { id: 2, name: 'Product 2', quantity: 20 } as WarehouseProduct
+];
+
 
     beforeEach(async () => {
         const mockShipmentsListService = {};
@@ -20,10 +28,15 @@ let mockFormBuilder: FormBuilder;
         };
         mockFormBuilder = new FormBuilder();
 
+        mockProductListService = {
+            products: signal<WarehouseProduct[]>(mockProducts),
+        };
+
         await TestBed.configureTestingModule({
             imports: [EditShipmentComponent, ReactiveFormsModule],
             providers: [
                 { provide: ShipmentsListService, useValue: mockShipmentsListService },
+                { provide: ProductsListService, useValue: mockProductListService },
                 { provide: NgbActiveModal, useValue: mockActiveModal },
                 { provide: FormBuilder, useValue: mockFormBuilder },
                 DatePipe,
@@ -43,12 +56,12 @@ let mockFormBuilder: FormBuilder;
 
     it('should initialize form in edit mode if shipment is provided', () => {
         component.shipment = {
-        id: 1,
-        companyName: 'Test Company',
-        shipmentId: 'SHIP123',
-        shipmentDate: new Date().toISOString(),
-        statusId: 1,
-        products: []
+            id: 1,
+            companyName: 'Test Company',
+            shipmentId: 'SHIP123',
+            shipmentDate: new Date().toISOString(),
+            statusId: 1,
+            products: []
         };
         component.ngOnInit();
         expect(component.isEditMode).toBeTrue();
@@ -102,11 +115,6 @@ let mockFormBuilder: FormBuilder;
     describe('getMaxQuantity', () => {
         it('should return correct max quantity for new shipment', () => {
           component.isEditMode = false;
-          component.allProducts = [
-            { id: 1, name: 'Product 1', quantity: 10 } as WarehouseProduct,
-            { id: 2, name: 'Product 2', quantity: 20 } as WarehouseProduct
-          ];
-    
           component.addProduct({ productId: 1, quantity: 5 });
           
           expect(component.getMaxQuantity(0)).toBe(10);
@@ -114,10 +122,6 @@ let mockFormBuilder: FormBuilder;
     
         it('should return correct max quantity for existing shipment', () => {
           component.isEditMode = true;
-          component.allProducts = [
-            { id: 1, name: 'Product 1', quantity: 10 } as WarehouseProduct,
-            { id: 2, name: 'Product 2', quantity: 20 } as WarehouseProduct
-          ];
           component.shipment = {
             id: 1,
             companyName: 'Test Company',
@@ -134,11 +138,8 @@ let mockFormBuilder: FormBuilder;
     
         it('should return 0 for non-existent product', () => {
           component.isEditMode = false;
-          component.allProducts = [
-            { id: 1, name: 'Product 1', quantity: 10 } as WarehouseProduct
-          ];
     
-          component.addProduct({ productId: 2, quantity: 5 });
+          component.addProduct({ productId: 3, quantity: 5 });
           
           expect(component.getMaxQuantity(0)).toBe(0);
         });

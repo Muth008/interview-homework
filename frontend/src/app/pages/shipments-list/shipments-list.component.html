@@ -1,5 +1,5 @@
 <div class="shipments-list">
-    <ng-container *ngIf="(shipments$ | async) as shipments; else noData">
+    <ng-container *ngIf="shipmentListService.shipments() as shipments; else noData">
         <ng-container *ngIf="shipments.length > 0; else noData">
             <app-list-shipment *ngFor="let shipment of shipments"
                            [shipment]="shipment"

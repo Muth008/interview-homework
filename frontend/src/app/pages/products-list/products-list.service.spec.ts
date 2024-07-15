@@ -6,6 +6,7 @@ import { CommonUtilsService } from 'src/app/common/utils/common-utils.service';
 import { BehaviorSubject, of } from 'rxjs';
 import { WarehouseProduct } from 'src/app/core/models/warehouseProduct';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { signal } from '@angular/core';
 
 describe('ProductsListService', () => {
     let service: ProductsListService;
@@ -42,13 +43,11 @@ describe('ProductsListService', () => {
         expect(service).toBeTruthy();
     });
 
-    it('getProducts should fetch products and emit them', (done) => {
-        service.getProducts().subscribe();
-        service.productsUpdate.subscribe((products) => {
-            expect(products.length).toBe(1);
-            expect(products[0].name).toBe('Test Product');
-            done();
-        });
+    it('getProducts should fetch products and emit them', () => {
+        service.fetchProducts().subscribe();
+        let products = service.products;
+        expect(products().length).toBe(1);
+        expect(products()[0].name).toBe('Test Product');
     });
 
     it('getProduct should fetch a single product by id', (done) => {
@@ -59,41 +58,35 @@ describe('ProductsListService', () => {
         });
     });
 
-    it('addProduct should call apiProductPost and refresh products list', (done) => {
+    it('addProduct should call apiProductPost and refresh products list', () => {
         const product: WarehouseProduct = { id: 2, name: 'New Product', quantity: 10, price: 100 };
-        service.productsUpdate = new BehaviorSubject<Array<WarehouseProduct>>([]);
+        service.products = signal<Array<WarehouseProduct>>([]);
 
         service.addProduct(product);
 
-        service.productsUpdate.subscribe((products) => {
-            expect(productServiceMock.apiProductPost).toHaveBeenCalled();
-            expect(products.length).toBe(1);
-            expect(products[0].name).toBe('Test Product');
-            done();
-        });
-    });
+        let products = service.products;
+        expect(productServiceMock.apiProductPost).toHaveBeenCalled();
+        expect(products().length).toBe(1);
+        expect(products()[0].name).toBe('Test Product');
+});
 
-    it('updateProduct should call apiProductPut and refresh products list', (done) => {
+    it('updateProduct should call apiProductPut and refresh products list', () => {
         const product: WarehouseProduct = { id: 1, name: 'Updated Product', quantity: 10, price: 100 };
-        service.productsUpdate = new BehaviorSubject<Array<WarehouseProduct>>([]);
+        service.products = signal<Array<WarehouseProduct>>([]);
 
         service.updateProduct(product);
 
-        service.productsUpdate.subscribe((products) => {
-            expect(productServiceMock.apiProductPut).toHaveBeenCalled();
-            expect(products.length).toBe(1);
-            expect(products[0].name).toBe('Test Product');
-            done();
-        });
+        let products = service.products;
+        expect(productServiceMock.apiProductPut).toHaveBeenCalled();
+        expect(products().length).toBe(1);
+        expect(products()[0].name).toBe('Test Product');
     });
 
-    it('refreshProducts should fetch products and emit them', (done) => {
+    it('refreshProducts should fetch products and emit them', () => {
         service.refreshProducts();
 
-        service.productsUpdate.subscribe((products) => {
-            expect(products.length).toBe(1);
-            expect(products[0].name).toBe('Test Product');
-            done();
-        });
+        let products = service.products;
+        expect(products().length).toBe(1);
+        expect(products()[0].name).toBe('Test Product');
     });
 });

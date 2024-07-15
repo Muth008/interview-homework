@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { WarehouseShipment, WarehouseShipmentProduct, WarehouseShipmentStatus } from 'src/app/core/models/warehouseShipment';
-import { WarehouseProduct } from 'src/app/core/models/warehouseProduct';
+import { ProductsListService } from '../../products-list/products-list.service';
 
 @Component({
     selector: 'app-edit-shipment',
@@ -19,12 +19,13 @@ import { WarehouseProduct } from 'src/app/core/models/warehouseProduct';
 
 export class EditShipmentComponent {
     @Input() shipment?: WarehouseShipment;
-    @Input() allProducts?: WarehouseProduct[];
     @Input() allStatuses?: WarehouseShipmentStatus[];
+
     shipmentForm: FormGroup;
     isEditMode: boolean = false;
 
     constructor(
+        public productsListService: ProductsListService,
         public activeModal: NgbActiveModal, 
         private fb: FormBuilder,
         private datePipe: DatePipe
@@ -70,7 +71,7 @@ export class EditShipmentComponent {
     getMaxQuantity(index: number): number {
         const productFormGroup = this.products.at(index);
         const productId = productFormGroup.get('productId')?.value;
-        const selectedProduct = this.allProducts?.find(product => product.id === productId);
+        const selectedProduct = this.productsListService.products()?.find(product => product.id === productId);
     
         let warehouseQuantity = selectedProduct ? selectedProduct.quantity : 0;
         let shipmentQuantity = 0;

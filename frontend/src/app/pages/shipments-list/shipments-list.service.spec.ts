@@ -5,6 +5,7 @@ import { ShipmentService } from 'src/app/api';
 import { BehaviorSubject, of } from 'rxjs';
 import { WarehouseShipment } from 'src/app/core/models/warehouseShipment';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { signal } from '@angular/core';
 
 describe('ShipmentsListService', () => {
     let service: ShipmentsListService;
@@ -42,13 +43,11 @@ describe('ShipmentsListService', () => {
         expect(service).toBeTruthy();
     });
 
-    it('getShipments should fetch shipments and emit them', (done) => {
-        service.getShipments().subscribe();
-        service.shipmentsUpdate.subscribe((shipments) => {
-            expect(shipments.length).toBe(1);
-            expect(shipments[0].companyName).toBe('Test Company');
-            done();
-        });
+    it('getShipments should fetch shipments and emit them', () => {
+        service.fetchShipments().subscribe();
+        let shipments = service.shipments;
+        expect(shipments().length).toBe(1);
+        expect(shipments()[0].companyName).toBe('Test Company');
     });
 
     it('getShipment should fetch a single shipment by id', (done) => {
@@ -59,47 +58,41 @@ describe('ShipmentsListService', () => {
         });
     });
 
-    it('addShipment should call apiShipmentPost and refresh shipments list', (done) => {
+    it('addShipment should call apiShipmentPost and refresh shipments list', () => {
         const shipment: WarehouseShipment = { id: 1, shipmentId: '123', companyName: 'Test Company', statusId: 1, shipmentDate: '2025-01-01', products: [
             { productId: 1, quantity: 10 },
             { productId: 2, quantity: 5 }
         ] };
-        service.shipmentsUpdate = new BehaviorSubject<Array<WarehouseShipment>>([]);
+        service.shipments = signal<Array<WarehouseShipment>>([]);
 
         service.addShipment(shipment);
 
-        service.shipmentsUpdate.subscribe((shipments) => {
-            expect(mockShipmentService.apiShipmentPost).toHaveBeenCalled();
-            expect(shipments.length).toBe(1);
-            expect(shipments[0].companyName).toBe('Test Company');
-            done();
-        });
+        let shipments = service.shipments;
+        expect(mockShipmentService.apiShipmentPost).toHaveBeenCalled();
+        expect(shipments().length).toBe(1);
+        expect(shipments()[0].companyName).toBe('Test Company');
     });
 
-    it('updateShipment should call apiShipmentPut and refresh shipments list', (done) => {
+    it('updateShipment should call apiShipmentPut and refresh shipments list', () => {
         const shipment: WarehouseShipment = { id: 1, shipmentId: '123', companyName: 'Test Company', statusId: 1, shipmentDate: '2025-01-01', products: [
             { productId: 1, quantity: 10 },
             { productId: 2, quantity: 5 }
         ] };
-        service.shipmentsUpdate = new BehaviorSubject<Array<WarehouseShipment>>([]);
+        service.shipments = signal<Array<WarehouseShipment>>([]);
 
         service.updateShipment(shipment);
 
-        service.shipmentsUpdate.subscribe((shipments) => {
-            expect(mockShipmentService.apiShipmentPut).toHaveBeenCalled();
-            expect(shipments.length).toBe(1);
-            expect(shipments[0].companyName).toBe('Test Company');
-            done();
-        });
+        let shipments = service.shipments;
+        expect(mockShipmentService.apiShipmentPut).toHaveBeenCalled();
+        expect(shipments().length).toBe(1);
+        expect(shipments()[0].companyName).toBe('Test Company');
     });
 
-    it('refreshShipments should fetch shipments and emit them', (done) => {
+    it('refreshShipments should fetch shipments and emit them', () => {
         service.refreshShipments();
 
-        service.shipmentsUpdate.subscribe((shipments) => {
-            expect(shipments.length).toBe(1);
-            expect(shipments[0].companyName).toBe('Test Company');
-            done();
-        });
+        let shipments = service.shipments;
+        expect(shipments().length).toBe(1);
+        expect(shipments()[0].companyName).toBe('Test Company');
     });
 });

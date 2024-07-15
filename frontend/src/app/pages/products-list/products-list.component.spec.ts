@@ -7,6 +7,7 @@ import { WarehouseProduct } from 'src/app/core/models/warehouseProduct';
 import { CommonModule } from '@angular/common';
 import { ListProductComponent } from './list-product/list-product.component';
 import { EditProductComponent } from './edit-product-modal/edit-product.component';
+import { signal } from '@angular/core';
 
 describe('ProductsListComponent', () => {
     let component: ProductsListComponent;
@@ -22,7 +23,7 @@ describe('ProductsListComponent', () => {
     beforeEach(async () => {
         mockProductListService = {
             refreshProducts: jasmine.createSpy('refreshProducts'),
-            productsUpdate: new BehaviorSubject<WarehouseProduct[]>(mockProducts),
+            products: signal<WarehouseProduct[]>(mockProducts),
             updateProduct: jasmine.createSpy('updateProduct').and.callThrough(),
             addProduct: jasmine.createSpy('addProduct').and.callThrough()
         };

@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {ListProductComponent} from "./list-product/list-product.component";
-import {Observable, of, take} from "rxjs";
-import {WarehouseProduct} from "../../core/models/warehouseProduct";
+import { ListProductComponent } from "./list-product/list-product.component";
+import { WarehouseProduct } from "../../core/models/warehouseProduct";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditProductComponent } from './edit-product-modal/edit-product.component';
 import { ProductsListService } from './products-list.service';
@@ -15,10 +14,8 @@ import { ProductsListService } from './products-list.service';
     styleUrls: ['./products-list.component.scss']
 })
 export class ProductsListComponent  {
-    products$: Observable<WarehouseProduct[]> = this.productListService.productsUpdate.asObservable();
-
     constructor(
-        private productListService: ProductsListService,
+        public productListService: ProductsListService,
         private modalService: NgbModal
     ) {
         this.productListService.refreshProducts();
@@ -28,12 +25,10 @@ export class ProductsListComponent  {
      * Finds the prodoct by id in products$ and passes it to the edit modal.
      */
     editProduct(id?: number): void {
-        this.products$.pipe(take(1)).subscribe(products => {
-            const product = products.find(product => product.id === id);
-            if (product) {
-                this.openProductModal(product);
-            }
-        });
+        const product = this.productListService.products().find(product => product.id === id);
+        if (product) {
+            this.openProductModal(product);
+        }
     }
 
     /**

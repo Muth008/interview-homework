@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
+import { Observable, switchMap, tap } from 'rxjs';
 import { ShipmentService, StatusService } from 'src/app/api';
 import { WarehouseShipment, WarehouseShipmentStatus } from 'src/app/core/models/warehouseShipment';
 import { ProductsListService } from '../products-list/products-list.service';
@@ -8,7 +8,7 @@ import { ProductsListService } from '../products-list/products-list.service';
     providedIn: 'root'
 })
 export class ShipmentsListService {
-    public shipmentsUpdate = new BehaviorSubject<Array<WarehouseShipment>>([]);
+    shipments = signal<Array<WarehouseShipment>>([]);
 
     constructor(
         private shipmentService: ShipmentService,
@@ -17,21 +17,19 @@ export class ShipmentsListService {
     ) { }
 
     /**
-     * Fetches a list of shipments from the shipmentService and emits the fetched shipments list
-     * through the `shipmentsUpdate` Subject. It returns an Observable.
+     * Fetches a list of shipments from the shipmentService and updates the shipmentsSignal.
      */
-    getShipments(): Observable<Array<WarehouseShipment>> {
-        const shipmentsObservable = this.shipmentService.apiShipmentListPost();
-        shipmentsObservable.subscribe(shipments => {
-            this.shipmentsUpdate.next(shipments);
-        });
-        return shipmentsObservable;
+    fetchShipments(): Observable<Array<WarehouseShipment>> {
+        return this.shipmentService.apiShipmentListPost()
+            .pipe(
+                tap(shipments => this.shipments.set(shipments))
+            );
     }
 
     /**
      * Fetches a list of shipment statuses from the statusService and returns an Observable.
      */
-    getStatuses(): Observable<Array<WarehouseShipmentStatus>> {
+    fetchStatuses(): Observable<Array<WarehouseShipmentStatus>> {
         return this.statusService.apiStatusListPost();
     }
 
@@ -48,9 +46,11 @@ export class ShipmentsListService {
      */
     addShipment(shipment: WarehouseShipment): void {
         const { id, shipmentId, ...shipmentData } = shipment;
-        this.shipmentService.apiShipmentPost(shipmentData).subscribe(() => {
-            this.refreshShipments();
-        });
+        this.shipmentService.apiShipmentPost(shipmentData)
+            .pipe(
+                switchMap(() => this.fetchShipments())
+            )
+            .subscribe();
     }
 
     /**
@@ -59,16 +59,18 @@ export class ShipmentsListService {
      */
     updateShipment(shipment: WarehouseShipment): void {
         const { shipmentId, ...shipmentData } = shipment;
-        this.shipmentService.apiShipmentPut(shipmentData).subscribe(() => {
-            this.refreshShipments();
-        });
+        this.shipmentService.apiShipmentPut(shipmentData)
+            .pipe(
+                switchMap(() => this.fetchShipments())
+            )
+            .subscribe();
     }
 
     /**
      * Refreshes the shipment list by calling getShipments
      */
     refreshShipments() {
-        this.getShipments();
+        this.fetchShipments().subscribe();
         this.productsListService.refreshProducts();
     }
 }

@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
+import { Observable, switchMap, tap } from 'rxjs';
 import { ProductService } from 'src/app/api';
 import { CommonUtilsService } from 'src/app/common/utils/common-utils.service';
 import { WarehouseProduct } from 'src/app/core/models/warehouseProduct';
@@ -8,7 +8,7 @@ import { WarehouseProduct } from 'src/app/core/models/warehouseProduct';
     providedIn: 'root'
 })
 export class ProductsListService {
-    public productsUpdate = new BehaviorSubject<Array<WarehouseProduct>>([]);
+    products = signal<Array<WarehouseProduct>>([]);
 
     constructor(
         private productService: ProductService,
@@ -16,15 +16,14 @@ export class ProductsListService {
     ) { }
 
     /**
-     * Fetches a list of products from the productService and emits the fetched products list
-     * through the `productsUpdate` Subject. It returns an Observable.
+     * Fetches a list of products from the productService and updates the productsSignal.
      */
-    getProducts(): Observable<Array<WarehouseProduct>> {
-        const productsObservable = this.productService.apiProductListPost();
-        productsObservable.subscribe(products => {
-        this.productsUpdate.next(products);
-        });
-        return productsObservable;
+    fetchProducts(): Observable<Array<WarehouseProduct>> {
+        return this.productService.apiProductListPost()
+            .pipe(
+                tap(products => this.products.set(products)
+            )
+        );
     }
 
     /**
@@ -48,11 +47,11 @@ export class ProductsListService {
         const priceStr = String(price);
     
         // Call apiProductPost with the extracted properties
-        this.productService
-            .apiProductPost(name, quantityStr, priceStr, description, imageUrl, image)
-            .subscribe(() => {
-                this.refreshProducts();
-            });
+        this.productService.apiProductPost(name, quantityStr, priceStr, description, imageUrl, image)
+            .pipe(
+                switchMap(() => this.fetchProducts())
+            )
+            .subscribe();
     }
 
     /**
@@ -70,18 +69,19 @@ export class ProductsListService {
         const priceStr = String(price);
     
         // Call apiProductPut with the extracted properties
-        this.productService
-            .apiProductPut(idStr, name, quantityStr, priceStr, description, imageUrl, image)
-            .subscribe(() => {
-                this.refreshProducts();
-            });
+        this.productService.apiProductPut(idStr, name, quantityStr, priceStr, description, imageUrl, image)
+            .pipe(
+                switchMap(() => this.fetchProducts())
+            )
+            .subscribe();
     }
 
+
     /**
-     * Refreshes the product list by calling getProducts
+     * Refreshes the product list by calling fetchProducts
      */
-    refreshProducts() {
-        this.getProducts();
+    refreshProducts(): void {
+        this.fetchProducts().subscribe();
     }
     
 }
