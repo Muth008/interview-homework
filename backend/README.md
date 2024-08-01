@@ -81,6 +81,3 @@ npm test
 ```
 
 This will run the tests defined in the jest.config.ts and jest.setup.ts files, and output the results.
-
-## License
-This project is licensed under the MIT License - see the LICENSE file for details.

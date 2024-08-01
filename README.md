@@ -66,4 +66,4 @@ The backend REST API documentation is available at `http://localhost:<PORT>/api-
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file in the backend directory for details.
+This project is licensed under the MIT License - see the LICENSE file.

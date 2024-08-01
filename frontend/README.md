@@ -42,7 +42,3 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 - **Warehouse Status**: View a table of available products, including quantity and unit price.
 - **Shipments**: Create, edit, and view shipments, including company name, shipment ID, scheduled shipment date, items, and status.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
